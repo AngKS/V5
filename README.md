@@ -104,5 +104,8 @@ repository push timestamp and are labelled in the UI. Configure a server-only
 
 The browser requests nothing until the carousel approaches the viewport, fetches
 subsequent pages on demand, and retains visited pages locally for the mounted
-carousel. Arrow buttons, a page selector, keyboard arrows on the carousel region,
-and horizontal touch swipes navigate. Motion transitions honor reduced motion.
+carousel. Previous/Next buttons, keyboard arrows on the carousel region, horizontal
+trackpad gestures, and mobile touch swipes navigate. Trackpad momentum advances
+only one page per gesture; vertical scrolling and pinch zoom are left alone.
+Cards remain visible during lazy loading, then transition in the navigation
+direction. Motion transitions honor reduced motion.
