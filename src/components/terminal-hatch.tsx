@@ -2,7 +2,7 @@
 
 import dynamic from "next/dynamic";
 import { awardStamp } from "@/lib/discoveries";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { Suspense, useCallback, useEffect, useRef, useState } from "react";
 
 import "./terminal.css";
 import { ModeTransition } from "./mode-transition";
@@ -185,7 +185,11 @@ export function TerminalHatch() {
       >
         <span aria-hidden="true">[ END OF TRANSMISSION ]</span>
       </button>
-      {primed && <Terminal isOpen={open} pull={pull} onClose={close} />}
+      {primed && (
+        <Suspense fallback={null}>
+          <Terminal isOpen={open} pull={pull} onClose={close} />
+        </Suspense>
+      )}
       {transition && (
         <ModeTransition
           mode={transition}
@@ -194,10 +198,12 @@ export function TerminalHatch() {
         />
       )}
       {breached && (
-        <CyberBleed
-          active={breached}
-          onRestore={() => beginTransition("restore")}
-        />
+        <Suspense fallback={null}>
+          <CyberBleed
+            active={breached}
+            onRestore={() => beginTransition("restore")}
+          />
+        </Suspense>
       )}
     </>
   );

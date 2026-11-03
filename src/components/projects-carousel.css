@@ -20,7 +20,7 @@
 }
 .repo-toolbar {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
   gap: 20px;
   margin-bottom: 24px;
   color: var(--repo-on-dark);

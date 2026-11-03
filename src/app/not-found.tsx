@@ -1,3 +1,4 @@
+import { Icon } from "@/components/icon";
 import Link from "next/link";
 import { DiscoveryAward, Discoveries } from "@/components/discoveries";
 export default function NotFound() {
@@ -5,7 +6,10 @@ export default function NotFound() {
     <main className="not-detected wrap">
       <DiscoveryAward id="lost" />
       <Link className="wordmark" href="/">
-        ANGKS<span>✳</span>
+        ANGKS
+        <span>
+          <Icon name="starburst" />
+        </span>
       </Link>
       <div className="detector-field" aria-hidden="true">
         <span>404</span>
@@ -30,7 +34,7 @@ export default function NotFound() {
         This page isn’t here. Your next discovery might be.
       </p>
       <Link href="/" className="text-link">
-        BACK TO KNOWN TERRITORY ↗
+        BACK TO KNOWN TERRITORY <Icon name="arrow-up-right" />
       </Link>
       <Discoveries />
     </main>

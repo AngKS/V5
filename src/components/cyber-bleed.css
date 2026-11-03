@@ -601,3 +601,116 @@ html.cyber-breach {
   > .intro-portrait:not(.cyber-portrait) {
   display: none;
 }
+
+/* VR-panda stencil: real SVG paint, confined to the hero's text column. */
+.cyber-breach {
+  --panda-neon-green: #70ff86;
+  --panda-neon-cyan: #43f5ed;
+  --panda-neon-blue: #408cff;
+}
+.cyber-breach .intro-copy {
+  position: relative;
+  isolation: isolate;
+  background: none;
+}
+.cyber-panda {
+  position: absolute;
+  z-index: -1;
+  pointer-events: none;
+  inset: -12% -4% -18%;
+  display: grid;
+  place-items: center;
+  opacity: 0.27;
+  animation: panda-neon-breathe 7s ease-in-out infinite;
+}
+.cyber-panda > svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  max-height: 660px;
+  overflow: visible;
+  filter: drop-shadow(0 0 3px var(--panda-neon-cyan))
+    drop-shadow(0 0 10px var(--panda-neon-blue));
+}
+.panda-glitch-channel {
+  opacity: 0;
+  animation: panda-signal-slip 8s steps(1, end) infinite;
+}
+.panda-paint-drips {
+  transform-box: fill-box;
+  transform-origin: center top;
+  animation: panda-paint-settle 3s ease-out both;
+}
+@keyframes panda-neon-breathe {
+  0%,
+  100% {
+    opacity: 0.22;
+  }
+  50% {
+    opacity: 0.32;
+  }
+}
+@keyframes panda-signal-slip {
+  0%,
+  82%,
+  88%,
+  100% {
+    opacity: 0;
+    transform: translateX(0);
+  }
+  83%,
+  86% {
+    opacity: 0.8;
+    transform: translateX(7px);
+  }
+  84%,
+  87% {
+    opacity: 0.45;
+    transform: translateX(-5px);
+  }
+}
+@keyframes panda-paint-settle {
+  from {
+    transform: scaleY(0.35);
+    opacity: 0.25;
+  }
+  to {
+    transform: scaleY(1);
+    opacity: 1;
+  }
+}
+@media (max-width: 700px) {
+  .cyber-panda {
+    inset: -9% 0 -10%;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .cyber-panda,
+  .panda-glitch-channel,
+  .panda-paint-drips {
+    animation: none;
+  }
+  .cyber-panda {
+    opacity: 0.25;
+  }
+  .panda-glitch-channel {
+    display: none;
+  }
+}
+
+.cyber-breach .about-title {
+  position: relative;
+  isolation: isolate;
+}
+.about-title .cyber-panda-laptop {
+  inset: -35px -12px -25px;
+  animation-delay: -2s;
+}
+.about-title .panda-glitch-channel {
+  animation-delay: -3s;
+}
+@media (max-width: 700px) {
+  .about-title .cyber-panda-laptop {
+    inset: -36px 0 -30px 25%;
+  }
+}

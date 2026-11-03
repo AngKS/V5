@@ -1,4 +1,6 @@
 "use client";
+import { Icon } from "@/components/icon";
+
 import { useEffect, useRef } from "react";
 import "./mode-transition.css";
 import { BreachSequence } from "./breach-sequence";
@@ -96,7 +98,7 @@ export function ModeTransition({
         )}
       </div>
       <button className="transition-skip" onClick={skip} autoFocus>
-        Skip transition ↵
+        Skip transition <Icon name="enter" />
       </button>
     </dialog>
   );

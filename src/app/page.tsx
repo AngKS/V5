@@ -1,3 +1,6 @@
+import { PagePeel } from "@/components/page-peel";
+import { InterestsMarquee } from "@/components/interests-marquee";
+import { Icon } from "@/components/icon";
 import Image from "next/image";
 import { Discoveries } from "@/components/discoveries";
 import { TerminalHatch } from "@/components/terminal-hatch";
@@ -25,7 +28,7 @@ export default async function Home() {
             <figure className="portrait-panel">
               <div className="portrait-stage">
                 <span className="portrait-star" aria-hidden="true">
-                  ✳
+                  <Icon name="starburst" />
                 </span>
                 <Image
                   className="intro-portrait"
@@ -39,7 +42,9 @@ export default async function Home() {
               </div>
               <figcaption>
                 <span>FIG. 01 — THE HUMAN BEHIND THE CODE</span>
-                <span aria-hidden="true">↗</span>
+                <span aria-hidden="true">
+                  <Icon name="arrow-up-right" />
+                </span>
               </figcaption>
             </figure>
             <div className="intro-copy">
@@ -58,32 +63,32 @@ export default async function Home() {
               </p>
               <div className="intro-actions">
                 <a className="intro-primary" href="#portfolio">
-                  EXPLORE MY WORK <span aria-hidden="true">↗</span>
+                  EXPLORE MY WORK{" "}
+                  <span aria-hidden="true">
+                    <Icon name="arrow-up-right" />
+                  </span>
                 </a>
                 <a className="intro-secondary" href="#about">
-                  A LITTLE ABOUT ME <span aria-hidden="true">↓</span>
+                  A LITTLE ABOUT ME{" "}
+                  <span aria-hidden="true">
+                    <Icon name="arrow-down" />
+                  </span>
                 </a>
               </div>
             </div>
           </div>
         </section>
-        <div className="ticker" aria-label="Areas of interest">
-          <span>COMPUTER VISION</span>
-          <b>✳</b>
-          <span>EXPLAINABLE AI</span>
-          <b>✳</b>
-          <span>INFRASTRUCTURE</span>
-          <b>✳</b>
-          <span>ENDLESS CURIOSITY</span>
-        </div>
+        <InterestsMarquee />
         <section id="about" className="about wrap section">
-          <div className="section-label">01 / THE PERSON BEHIND THE PIXELS</div>
+          <div className="section-label">Introduction</div>
           <div className="about-grid">
-            <h2>
-              A LITTLE
-              <br />
-              CONTEXT<span className="accent glitch-dot">.</span>
-            </h2>
+            <div className="about-title">
+              <h2>
+                A LITTLE
+                <br />
+                CONTEXT<span className="accent glitch-dot">.</span>
+              </h2>
+            </div>
             <div>
               <p className="editorial">
                 Part AI enthusiast.
@@ -109,7 +114,7 @@ export default async function Home() {
                 target="_blank"
                 rel="noreferrer"
               >
-                THE FULL STORY / RESUME ↗
+                THE FULL STORY / RESUME <Icon name="arrow-up-right" />
               </a>
             </div>
           </div>
@@ -151,23 +156,19 @@ export default async function Home() {
                     target="_blank"
                     rel="noreferrer"
                   >
-                    EXPLORE MY EXPERIENCE ↗
+                    EXPLORE MY EXPERIENCE <Icon name="arrow-up-right" />
                   </a>
                 </>
               )}
             </div>
           </div>
+          <PagePeel />
         </section>
         <section id="portfolio" className="portfolio section">
           <div className="wrap">
-            <div className="section-label">02 / IDEAS, MEET REALITY</div>
             <div className="section-heading">
               <h2>
-                WORK IN
-                <br />
-                <span className="outline">
-                  PROGRESS<span className="glitch-dot">.</span>
-                </span>
+                My Projects<span className="glitch-dot">.</span>
               </h2>
               <p>
                 Experiments that became projects.
@@ -184,12 +185,12 @@ export default async function Home() {
               target="_blank"
               rel="noreferrer"
             >
-              MORE EXPERIMENTS ON GITHUB ↗
+              MORE EXPERIMENTS ON GITHUB <Icon name="arrow-up-right" />
             </a>
           </div>
         </section>
         <section id="writing" className="writing wrap section">
-          <div className="section-label">03 / NOTES FROM THE MARGINS</div>
+          <div className="section-label">Publications</div>
           <div className="writing-grid">
             <h2>
               THINKING
@@ -203,7 +204,7 @@ export default async function Home() {
                     <span className="eyebrow">{article.date} / MEDIUM</span>
                     <h3>
                       <a href={article.url} target="_blank" rel="noreferrer">
-                        {article.title} ↗
+                        {article.title} <Icon name="arrow-up-right" />
                       </a>
                     </h3>
                   </article>
@@ -234,7 +235,7 @@ export default async function Home() {
                       target="_blank"
                       rel="noreferrer"
                     >
-                      READ ON MEDIUM ↗
+                      READ ON MEDIUM <Icon name="arrow-up-right" />
                     </a>
                   )}
                 </div>
@@ -244,7 +245,6 @@ export default async function Home() {
         </section>
         <section id="contact" className="contact section">
           <div className="wrap">
-            <div className="section-label">04 / THE NEXT CHAPTER?</div>
             <h2>
               LET’S MAKE
               <br />
@@ -262,23 +262,31 @@ export default async function Home() {
                 My inbox is open.
               </p>
               <a className="contact-link" href={`mailto:${profile.email}`}>
-                SAY HELLO <span>↗</span>
+                SAY HELLO{" "}
+                <span>
+                  <Icon name="arrow-up-right" />
+                </span>
               </a>
             </div>
             <footer>
               <a className="wordmark" href="#home">
-                ANGKS<span>✳</span>
+                ANGKS
+                <span>
+                  <Icon name="starburst" />
+                </span>
               </a>
               <nav aria-label="Social and resume links">
-                <a href={`mailto:${profile.email}`}>Email ↗</a>
+                <a href={`mailto:${profile.email}`}>
+                  Email <Icon name="arrow-up-right" />
+                </a>
                 <a href={profile.linkedin} target="_blank" rel="noreferrer">
-                  LinkedIn ↗
+                  LinkedIn <Icon name="arrow-up-right" />
                 </a>
                 <a href={profile.github} target="_blank" rel="noreferrer">
-                  GitHub ↗
+                  GitHub <Icon name="arrow-up-right" />
                 </a>
                 <a href={profile.resume} target="_blank" rel="noreferrer">
-                  Resume ↗
+                  Resume <Icon name="arrow-up-right" />
                 </a>
               </nav>
               <span className="eyebrow">MADE OF CURIOSITY & CODE.</span>

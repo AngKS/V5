@@ -1,8 +1,11 @@
 "use client";
+import { Icon } from "@/components/icon";
+
 import { useEffect, useState, useSyncExternalStore } from "react";
 import "./cyber-bleed.css";
 import { createPortal, preload } from "react-dom";
 import Image from "next/image";
+import { CyberPanda } from "./cyber-panda";
 import { SectionRain } from "./section-rain";
 
 const motionQuery = "(prefers-reduced-motion: reduce)";
@@ -22,6 +25,8 @@ export default function CyberBleed({
   onRestore: () => void;
 }) {
   const [portrait, setPortrait] = useState<HTMLElement | null>(null);
+  const [aboutTitle, setAboutTitle] = useState<HTMLElement | null>(null);
+  const [heroCopy, setHeroCopy] = useState<HTMLElement | null>(null);
   const [portraitReady, setPortraitReady] = useState(false);
   const [sections, setSections] = useState<HTMLElement[]>([]);
   const reduced = useSyncExternalStore(
@@ -36,6 +41,8 @@ export default function CyberBleed({
   useEffect(() => {
     preload("/comic-transition.png", { as: "image" });
     setPortrait(document.querySelector<HTMLElement>(".portrait-stage"));
+    setHeroCopy(document.querySelector<HTMLElement>(".intro-copy"));
+    setAboutTitle(document.querySelector<HTMLElement>(".about-title"));
     setSections(
       Array.from(document.querySelectorAll<HTMLElement>("main > section")),
     );
@@ -43,6 +50,10 @@ export default function CyberBleed({
   return (
     <>
       {active && <div className="cyber-backdrop" aria-hidden="true" />}
+      {active && heroCopy && createPortal(<CyberPanda />, heroCopy)}
+      {active &&
+        aboutTitle &&
+        createPortal(<CyberPanda variant="laptop" />, aboutTitle)}
       {active &&
         portrait &&
         createPortal(
@@ -88,7 +99,10 @@ export default function CyberBleed({
         </div>
       )}
       <button className="cyber-switch" type="button" onClick={onRestore}>
-        <span aria-hidden="true">◈</span> BREACH ACTIVE / RESTORE
+        <span aria-hidden="true">
+          <Icon name="breach" />
+        </span>{" "}
+        BREACH ACTIVE / RESTORE
       </button>
     </>
   );

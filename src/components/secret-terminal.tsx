@@ -1,4 +1,5 @@
 "use client";
+import { Icon } from "@/components/icon";
 
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import { motion, useReducedMotion } from "motion/react";
@@ -259,7 +260,10 @@ export default function SecretTerminal({
             autoFocus
             aria-label="Close terminal"
           >
-            ESC <span aria-hidden="true">×</span>
+            ESC{" "}
+            <span aria-hidden="true">
+              <Icon name="close" />
+            </span>
           </button>
         </header>
         <div className="terminal-classification" aria-hidden="true">
@@ -311,7 +315,7 @@ export default function SecretTerminal({
               </pre>
               {entry.href && (
                 <a href={entry.href} target="_blank" rel="noreferrer">
-                  Open resume.pdf ↗
+                  Open resume.pdf <Icon name="arrow-up-right" />
                 </a>
               )}
             </div>
@@ -323,7 +327,7 @@ export default function SecretTerminal({
               className="terminal-skip"
               onClick={() => setBootLength(BOOT.length)}
             >
-              Skip boot sequence ↵
+              Skip boot sequence <Icon name="enter" />
             </button>
           ) : (
             <form onSubmit={submit} className="terminal-command">
@@ -370,7 +374,7 @@ export default function SecretTerminal({
                 </button>
               ) : (
                 <button type="submit" disabled={!command.trim()}>
-                  ENTER ↵
+                  ENTER <Icon name="enter" />
                 </button>
               )}
             </form>

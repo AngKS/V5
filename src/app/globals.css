@@ -133,12 +133,9 @@ h1 {
 }
 .ticker {
   display: flex;
-  justify-content: space-around;
-  gap: 22px;
   align-items: center;
   overflow: hidden;
-  white-space: nowrap;
-  padding: 16px 24px;
+  padding: 16px 0;
   border-block: 2px solid;
   background: var(--accent);
   font:
@@ -146,8 +143,75 @@ h1 {
     sans-serif;
   color: var(--paper);
 }
-.ticker b {
-  font-size: 25px;
+.ticker-window {
+  overflow: hidden;
+  flex: 1;
+  min-width: 0;
+}
+.ticker-track {
+  display: flex;
+  width: max-content;
+  animation: interests-scroll 38s linear infinite;
+}
+.ticker-group {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.ticker-group li {
+  display: flex;
+  align-items: center;
+  gap: 40px;
+  padding-right: 40px;
+  white-space: nowrap;
+  text-transform: uppercase;
+}
+.ticker[data-paused="true"] .ticker-track {
+  animation-play-state: paused;
+}
+.ticker-toggle {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 44px;
+  height: 32px;
+  margin-inline: 8px;
+  border: 1px solid currentColor;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+}
+.ticker-toggle:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 3px;
+}
+@keyframes interests-scroll {
+  to {
+    transform: translateX(-50%);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ticker-track {
+    animation: none;
+    width: auto;
+  }
+  .ticker-group {
+    flex-wrap: wrap;
+    gap: 14px 24px;
+    padding-inline: 24px;
+  }
+  .ticker-group li {
+    white-space: normal;
+    gap: 24px;
+    padding: 0;
+  }
+  .ticker-group[aria-hidden="true"],
+  .ticker-toggle {
+    display: none;
+  }
 }
 .section {
   padding-block: 85px;
@@ -846,4 +910,53 @@ footer .eyebrow {
 /* Match the existing dark portfolio band for this external link focus ring. */
 .portfolio > .wrap > .text-link:focus-visible {
   outline-color: var(--paper);
+}
+
+/* Inline SVG glyphs stay monochrome across mobile and desktop platforms. */
+.glyph {
+  display: inline-block;
+  flex-shrink: 0;
+  vertical-align: -0.125em;
+}
+.portrait-star .glyph {
+  filter: drop-shadow(1px 0 0 var(--ink)) drop-shadow(-1px 0 0 var(--ink));
+}
+
+/* A quiet collectible-panda print beneath the hero's portrait and copy. */
+.intro-hero {
+  position: relative;
+  isolation: isolate;
+}
+.intro-hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: url("/panda-wallpaper.webp") repeat center top / 660px 660px;
+  mix-blend-mode: multiply;
+  opacity: 0.13;
+  mask-image: linear-gradient(
+    180deg,
+    transparent,
+    black 12%,
+    black 85%,
+    transparent
+  );
+}
+.intro-copy {
+  background: radial-gradient(
+    ellipse at center,
+    var(--paper) 15%,
+    transparent 75%
+  );
+}
+.cyber-breach .intro-hero::before {
+  display: none;
+}
+@media (max-width: 700px) {
+  .intro-hero::before {
+    background-size: 480px 480px;
+    opacity: 0.1;
+  }
 }

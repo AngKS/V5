@@ -1,4 +1,6 @@
 "use client";
+import { Icon } from "@/components/icon";
+
 import { useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 export function Header() {
@@ -18,7 +20,10 @@ export function Header() {
         href="#home"
         aria-label="Kah Shin, home"
       >
-        ANGKS<span>✳</span>
+        ANGKS
+        <span>
+          <Icon name="starburst" />
+        </span>
       </a>
       <nav className="desktop-nav" aria-label="Main navigation">
         {links.map(([label, id]) => (
@@ -28,7 +33,10 @@ export function Header() {
         ))}
       </nav>
       <a className="header-note" href="#contact">
-        LET’S TALK <span>↗</span>
+        LET’S TALK{" "}
+        <span>
+          <Icon name="arrow-up-right" />
+        </span>
       </a>
       <button
         className="menu-button"
@@ -36,7 +44,7 @@ export function Header() {
         aria-controls="mobile-menu"
         onClick={() => setOpen(!open)}
       >
-        {open ? "CLOSE −" : "MENU +"}
+        {open ? "CLOSE" : "MENU"} <Icon name={open ? "minus" : "plus"} />
       </button>
       <AnimatePresence>
         {open && (
@@ -50,7 +58,7 @@ export function Header() {
           >
             {links.map(([label, id]) => (
               <a key={id} href={`#${id}`} onClick={() => setOpen(false)}>
-                {label} ↗
+                {label} <Icon name="arrow-up-right" />
               </a>
             ))}
           </motion.nav>

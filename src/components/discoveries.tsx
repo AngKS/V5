@@ -1,4 +1,6 @@
 "use client";
+import { Icon } from "@/components/icon";
+
 import { useEffect, useState } from "react";
 import {
   awardStamp,
@@ -46,8 +48,13 @@ export function Discoveries() {
         rel="noreferrer"
         onClick={() => awardStamp("engine")}
       >
-        <span aria-hidden="true">[↳]</span> engine room{" "}
-        <span aria-hidden="true">↗</span>
+        <span aria-hidden="true">
+          <Icon name="branch" />
+        </span>{" "}
+        engine room{" "}
+        <span aria-hidden="true">
+          <Icon name="arrow-up-right" />
+        </span>
       </a>
       <details className="discovery-passport">
         <summary>
@@ -65,7 +72,7 @@ export function Discoveries() {
             return (
               <li key={stamp.id} className={found ? "stamp found" : "stamp"}>
                 <span className="stamp-symbol" aria-hidden="true">
-                  {found ? stamp.symbol : "?"}
+                  {found ? <Icon name={stamp.id} /> : "?"}
                 </span>
                 <strong>{found ? stamp.name : "Undiscovered"}</strong>
                 <span>{found ? stamp.description : "Keep exploring."}</span>

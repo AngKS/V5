@@ -1,4 +1,5 @@
 "use client";
+import { Icon } from "@/components/icon";
 
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { AnimatePresence, motion } from "motion/react";
@@ -109,7 +110,7 @@ export function PandaIntro({ children }: { children: ReactNode }) {
               <span className="eyebrow">A CURIOUS MIND. A FAMILIAR FACE.</span>
             </div>
             <button type="button" className="panda-skip" onClick={dismiss}>
-              SKIP INTRO ↗
+              SKIP INTRO <Icon name="arrow-up-right" />
             </button>
           </motion.div>
         )}

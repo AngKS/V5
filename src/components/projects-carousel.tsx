@@ -168,7 +168,6 @@ export function ProjectsCarousel() {
         </p>
       </noscript>
       <div className="repo-toolbar">
-        <span className="repo-label">Stars first, latest commits next</span>
         <span className="repo-label">
           {data ? `${data.total} public projects` : "From GitHub"}
         </span>
