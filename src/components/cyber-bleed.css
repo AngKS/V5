@@ -761,3 +761,64 @@ html.cyber-breach {
     opacity: 0.2;
   }
 }
+
+/* Split colour channels follow the portrait's organic frame, not the photo. */
+.cyber-breach .portrait-stage {
+  --frame-cyan: #67efff;
+  --frame-magenta: #ff72e7;
+  box-shadow:
+    -2px 0 0 var(--frame-cyan),
+    2px 1px 0 var(--frame-magenta);
+}
+.cyber-breach .portrait-stage::before,
+.cyber-breach .portrait-stage::after {
+  content: "";
+  position: absolute;
+  inset: 3px;
+  z-index: 2;
+  pointer-events: none;
+  border: 2px solid;
+  border-radius: inherit;
+  opacity: 0.65;
+  animation: portrait-frame-split 6s linear infinite;
+}
+.cyber-breach .portrait-stage::before {
+  border-color: var(--frame-cyan);
+  transform: translate(-2px, -1px);
+}
+.cyber-breach .portrait-stage::after {
+  border-color: var(--frame-magenta);
+  transform: translate(2px, 1px);
+  animation-name: portrait-frame-split-magenta;
+}
+@keyframes portrait-frame-split {
+  0%,
+  75%,
+  84%,
+  100% {
+    transform: translate(-2px, -1px);
+    opacity: 0.55;
+  }
+  77%,
+  81% {
+    transform: translate(3px, 1px);
+    opacity: 0.9;
+  }
+  79%,
+  83% {
+    transform: translate(-3px, 2px);
+    opacity: 0.7;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .cyber-breach .portrait-stage::before,
+  .cyber-breach .portrait-stage::after {
+    animation: none;
+  }
+}
+
+@keyframes portrait-frame-split-magenta {
+  0%, 75%, 84%, 100% { transform: translate(2px, 1px); opacity: .55; }
+  77%, 81% { transform: translate(-3px, -1px); opacity: .9; }
+  79%, 83% { transform: translate(3px, -2px); opacity: .7; }
+}

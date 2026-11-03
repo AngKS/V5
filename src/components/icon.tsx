@@ -2,6 +2,7 @@ const paths = {
   "arrow-up-right": "M5 19 19 5M5 5h14v14",
   "arrow-down": "M12 4v16m-7-7 7 7 7-7",
   starburst: "M12 2v20M2 12h20M5 5l14 14M5 19 19 5",
+  send: "m22 2-7 20-4-9-9-4 20-7ZM11 13 22 2",
   enter: "M20 4v9H4m6-6-6 6 6 6",
   close: "m6 6 12 12M6 18 18 6",
   plus: "M12 5v14M5 12h14",

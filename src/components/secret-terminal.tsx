@@ -2,7 +2,13 @@
 import { TerminalText } from "./terminal-text";
 import { Icon } from "@/components/icon";
 
-import { useEffect, useRef, useState, type FormEvent } from "react";
+import {
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+  type FormEvent,
+} from "react";
 import { motion, useReducedMotion } from "motion/react";
 import { BOOT, MAX_QUESTION_LENGTH, runCommand } from "@/lib/terminal";
 
@@ -19,7 +25,40 @@ export default function SecretTerminal({
 }) {
   const dialog = useRef<HTMLDialogElement>(null);
   const outsidePress = useRef(false);
+  const privacy = useRef<HTMLDivElement>(null);
+  const privacyButton = useRef<HTMLButtonElement>(null);
+  const [privacyOpen, setPrivacyOpen] = useState(false);
+  useEffect(() => {
+    if (!isOpen) setPrivacyOpen(false);
+    if (!privacyOpen) return;
+    const dismiss = (event: PointerEvent) => {
+      if (
+        event.target instanceof Node &&
+        !privacy.current?.contains(event.target)
+      ) {
+        setPrivacyOpen(false);
+      }
+    };
+    document.addEventListener("pointerdown", dismiss, true);
+    return () => document.removeEventListener("pointerdown", dismiss, true);
+  }, [privacyOpen, isOpen]);
   const input = useRef<HTMLInputElement>(null);
+  const [caretX, setCaretX] = useState<number | null>(0);
+  const measureCaret = useCallback(() => {
+    const element = input.current;
+    if (!element || element.selectionStart !== element.selectionEnd) {
+      setCaretX(null);
+      return;
+    }
+    const context = document.createElement("canvas").getContext("2d");
+    if (!context) return;
+    const style = getComputedStyle(element);
+    context.font = style.font;
+    const x =
+      context.measureText(element.value.slice(0, element.selectionStart ?? 0))
+        .width - element.scrollLeft;
+    setCaretX(Math.max(0, Math.min(element.clientWidth - 3, x)));
+  }, []);
   const output = useRef<HTMLDivElement>(null);
   const controller = useRef<AbortController | null>(null);
   const follow = useRef(true);
@@ -40,6 +79,14 @@ export default function SecretTerminal({
   const [announcement, setAnnouncement] = useState("");
   const reduced = useReducedMotion();
   const booting = bootLength < BOOT.length;
+  useEffect(() => {
+    measureCaret();
+    const element = input.current;
+    if (!element) return;
+    const observer = new ResizeObserver(measureCaret);
+    observer.observe(element);
+    return () => observer.disconnect();
+  }, [command, booting, measureCaret]);
 
   useEffect(() => {
     if (!isOpen) return;
@@ -236,7 +283,10 @@ export default function SecretTerminal({
       aria-labelledby="terminal-title"
       onCancel={(e) => {
         e.preventDefault();
-        onClose();
+        if (privacyOpen) {
+          setPrivacyOpen(false);
+          privacyButton.current?.focus();
+        } else onClose();
       }}
     >
       <motion.div
@@ -357,36 +407,85 @@ export default function SecretTerminal({
                 <span aria-hidden="true">~$</span>
                 <span className="terminal-sr">Terminal command</span>
               </label>
-              <input
-                ref={input}
-                id="terminal-command"
-                value={command}
-                onChange={(e) => setCommand(e.target.value)}
-                readOnly={busy}
-                maxLength={MAX_QUESTION_LENGTH + 3}
-                placeholder="Type help, or qn your question ..."
-                autoComplete="off"
-                autoCapitalize="off"
-                spellCheck={false}
-                enterKeyHint="send"
-                onKeyDown={(e) => {
-                  if ((e.ctrlKey || e.metaKey) && e.key === "c" && busy) {
-                    e.preventDefault();
-                    controller.current?.abort();
-                  }
-                  if (e.key === "ArrowUp" || e.key === "ArrowDown") {
-                    e.preventDefault();
-                    historyIndex.current = Math.max(
-                      0,
-                      Math.min(
-                        history.current.length,
-                        historyIndex.current + (e.key === "ArrowUp" ? -1 : 1),
-                      ),
-                    );
-                    setCommand(history.current[historyIndex.current] || "");
-                  }
-                }}
-              />
+              <div className="terminal-input-wrap">
+                <input
+                  ref={input}
+                  onSelect={measureCaret}
+                  onScroll={measureCaret}
+                  id="terminal-command"
+                  value={command}
+                  onChange={(e) => setCommand(e.target.value)}
+                  readOnly={busy}
+                  maxLength={MAX_QUESTION_LENGTH + 3}
+                  placeholder="Type help, or qn your question ..."
+                  autoComplete="off"
+                  autoCapitalize="off"
+                  spellCheck={false}
+                  enterKeyHint="send"
+                  onKeyDown={(e) => {
+                    if ((e.ctrlKey || e.metaKey) && e.key === "c" && busy) {
+                      e.preventDefault();
+                      controller.current?.abort();
+                    }
+                    if (e.key === "ArrowUp" || e.key === "ArrowDown") {
+                      e.preventDefault();
+                      historyIndex.current = Math.max(
+                        0,
+                        Math.min(
+                          history.current.length,
+                          historyIndex.current + (e.key === "ArrowUp" ? -1 : 1),
+                        ),
+                      );
+                      setCommand(history.current[historyIndex.current] || "");
+                    }
+                  }}
+                />
+                {caretX !== null && !busy && (
+                  <span
+                    className="terminal-block-caret"
+                    aria-hidden="true"
+                    style={{ transform: `translateX(${caretX}px)` }}
+                  />
+                )}
+              </div>
+              <div className="terminal-info" ref={privacy}>
+                <button
+                  ref={privacyButton}
+                  type="button"
+                  className="terminal-info-button"
+                  aria-label="About privacy and AI answers"
+                  aria-expanded={privacyOpen}
+                  aria-controls="terminal-privacy"
+                  onClick={() => setPrivacyOpen((value) => !value)}
+                >
+                  <svg
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.7"
+                    aria-hidden="true"
+                  >
+                    <circle cx="12" cy="12" r="9" />
+                    <path d="M12 11v6M12 7v1" />
+                  </svg>
+                </button>
+                {privacyOpen && (
+                  <div
+                    id="terminal-privacy"
+                    className="terminal-privacy-popover"
+                    role="note"
+                  >
+                    <strong>Privacy &amp; AI</strong>
+                    <p>
+                      Local commands stay here. <strong>qn</strong> sends your
+                      question + public bio to OpenAI. AI answers may be
+                      imperfect.
+                    </p>
+                  </div>
+                )}
+              </div>
               {busy ? (
                 <button
                   type="button"
@@ -395,16 +494,18 @@ export default function SecretTerminal({
                   STOP
                 </button>
               ) : (
-                <button type="submit" disabled={!command.trim()}>
-                  ENTER <Icon name="enter" />
+                <button
+                  type="submit"
+                  className="terminal-send"
+                  aria-label="Send command"
+                  title="Send command"
+                  disabled={!command.trim()}
+                >
+                  <Icon name="send" />
                 </button>
               )}
             </form>
           )}
-          <p className="terminal-privacy">
-            Local commands stay here. <strong>qn</strong> sends your question +
-            public bio to OpenAI. AI answers may be imperfect.
-          </p>
         </div>
         <div className="terminal-sr" role="status" aria-live="polite">
           {announcement}

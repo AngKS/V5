@@ -241,3 +241,67 @@
     animation: none;
   }
 }
+
+/* The collected stamp becomes a doorway back to the other side. */
+.stamp-breach-shortcut {
+  position: relative;
+}
+.stamp-replay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  border: 0;
+  padding: 0;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+}
+.stamp-breach-shortcut::after {
+  content: "";
+  position: absolute;
+  inset: -4px;
+  border: 4px double currentColor;
+  pointer-events: none;
+  opacity: 0;
+}
+.stamp-breach-shortcut:has(.stamp-replay:is(:hover, :focus-visible, :active)) {
+  text-shadow:
+    -2px 0 #46f5ff,
+    2px 0 #ff52d9;
+}
+.stamp-breach-shortcut:has(
+    .stamp-replay:is(:hover, :focus-visible, :active)
+  )::after {
+  opacity: 1;
+  box-shadow:
+    -3px 0 #46f5ff,
+    3px 0 #ff52d9;
+  animation: stamp-border-glitch 650ms steps(1, end) infinite;
+}
+@keyframes stamp-border-glitch {
+  0%,
+  100% {
+    transform: translate(0) rotate(0);
+  }
+  15% {
+    transform: translate(-2px, 1px) rotate(-1deg);
+  }
+  25% {
+    transform: translate(2px, -1px) rotate(1deg);
+  }
+  35%,
+  80% {
+    transform: translate(0);
+  }
+  85% {
+    transform: translate(1px, 2px);
+  }
+  90% {
+    transform: translate(-2px, -1px);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .stamp-breach-shortcut::after {
+    animation: none !important;
+  }
+}

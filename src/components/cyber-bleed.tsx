@@ -41,6 +41,9 @@ export default function CyberBleed({
   }, [active]);
   useEffect(() => {
     preload("/comic-transition.png", { as: "image" });
+    ["observe", "collaborate", "experiment", "focus", "create"].forEach(
+      (scene) => preload(`/comics/${scene}.webp`, { as: "image" }),
+    );
     setPortrait(document.querySelector<HTMLElement>(".portrait-stage"));
     setHeroCopy(document.querySelector<HTMLElement>(".intro-copy"));
     setAboutTitle(document.querySelector<HTMLElement>(".about-title"));

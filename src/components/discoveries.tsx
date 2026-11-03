@@ -4,6 +4,7 @@ import { Icon } from "@/components/icon";
 import { useEffect, useState } from "react";
 import {
   awardStamp,
+  BREACH_REPLAY_EVENT,
   readStamps,
   STAMPS,
   STAMP_EVENT,
@@ -70,7 +71,20 @@ export function Discoveries() {
           {STAMPS.map((stamp) => {
             const found = collected.includes(stamp.id);
             return (
-              <li key={stamp.id} className={found ? "stamp found" : "stamp"}>
+              <li
+                key={stamp.id}
+                className={`${found ? "stamp found" : "stamp"}${found && stamp.id === "breach" ? " stamp-breach-shortcut" : ""}`}
+              >
+                {found && stamp.id === "breach" && (
+                  <button
+                    type="button"
+                    className="stamp-replay"
+                    aria-label="Other side: enter breach mode"
+                    onClick={() =>
+                      window.dispatchEvent(new Event(BREACH_REPLAY_EVENT))
+                    }
+                  />
+                )}
                 <span className="stamp-symbol" aria-hidden="true">
                   {found ? <Icon name={stamp.id} /> : "?"}
                 </span>

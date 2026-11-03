@@ -545,6 +545,32 @@ footer .eyebrow {
       700 30px "Barlow Condensed",
       sans-serif;
   }
+  .mobile-nav .mobile-resume-button {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin: 8px 5px 8px 0;
+    padding: 16px 20px;
+    border: 2px solid var(--ink);
+    background: var(--accent);
+    color: var(--paper);
+    box-shadow: 5px 5px 0 var(--ink);
+    text-transform: uppercase;
+    transition:
+      transform 150ms ease,
+      box-shadow 150ms ease;
+  }
+  .mobile-nav .mobile-resume-button:hover,
+  .mobile-nav .mobile-resume-button:active {
+    transform: translate(3px, 3px);
+    box-shadow: 2px 2px 0 var(--ink);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .mobile-nav .mobile-resume-button {
+      transition: none;
+    }
+  }
   h1 {
     font-size: 12.2vw;
     line-height: 0.95;

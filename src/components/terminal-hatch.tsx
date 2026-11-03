@@ -1,7 +1,7 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { awardStamp } from "@/lib/discoveries";
+import { awardStamp, readStamps, BREACH_REPLAY_EVENT } from "@/lib/discoveries";
 import { Suspense, useCallback, useEffect, useRef, useState } from "react";
 
 import "./terminal.css";
@@ -59,6 +59,19 @@ export function TerminalHatch() {
     setPull(0);
     beginTransition("breach");
   }, [beginTransition]);
+  useEffect(() => {
+    const replay = () => {
+      if (breached || transitioning.current || !readStamps().includes("breach"))
+        return;
+      setOpen(false);
+      setPrimed(false);
+      setPull(0);
+      beginTransition("breach");
+    };
+    window.addEventListener(BREACH_REPLAY_EVENT, replay);
+    return () => window.removeEventListener(BREACH_REPLAY_EVENT, replay);
+  }, [breached, beginTransition]);
+
   const commitTransition = useCallback(() => {
     if (transition) applyMode(transition);
   }, [transition, applyMode]);

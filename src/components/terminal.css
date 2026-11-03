@@ -413,3 +413,102 @@
     padding: 12px;
   }
 }
+
+.terminal-controls {
+  position: relative;
+}
+.terminal-info {
+  flex: 0 0 auto;
+}
+.terminal-command .terminal-info-button {
+  width: 44px;
+  height: 44px;
+  padding: 10px;
+  display: grid;
+  place-items: center;
+  color: #a7c9ff;
+  background: transparent;
+  border: 1px solid #425775;
+}
+.terminal-info-button[aria-expanded="true"] {
+  background: #20344e;
+}
+.terminal-privacy-popover {
+  position: absolute;
+  bottom: calc(100% + 8px);
+  right: 12px;
+  width: min(340px, calc(100% - 24px));
+  z-index: 5;
+  padding: 16px;
+  border: 1px solid #6f91be;
+  background: #15253b;
+  color: #c9ddff;
+  box-shadow: 0 8px 24px #0006;
+  font:
+    12px/1.6 ui-monospace,
+    monospace;
+}
+.terminal-privacy-popover > strong {
+  color: #f1f6ff;
+}
+.terminal-privacy-popover p {
+  margin: 8px 0 0;
+}
+
+.terminal-input-wrap {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+}
+.terminal-command .terminal-input-wrap input {
+  display: block;
+  width: 100%;
+  caret-color: transparent;
+}
+.secret-terminal .terminal-command input:focus-visible,
+.secret-terminal .terminal-command input:focus {
+  outline: none;
+  box-shadow: none;
+}
+.terminal-block-caret {
+  display: none;
+  position: absolute;
+  top: 50%;
+  margin-top: -0.6em;
+  left: 0;
+  width: 3px;
+  height: 1.2em;
+  background: #c4e0ff;
+  pointer-events: none;
+  animation: terminal-caret-blink 1s steps(1, end) infinite;
+}
+.terminal-input-wrap:focus-within .terminal-block-caret {
+  display: block;
+}
+.terminal-command .terminal-send {
+  width: 44px;
+  min-height: 44px;
+  padding: 10px;
+  display: grid;
+  place-items: center;
+}
+.terminal-send .glyph {
+  width: 21px;
+  height: 21px;
+}
+@keyframes terminal-caret-blink {
+  0%,
+  49% {
+    opacity: 1;
+  }
+  50%,
+  100% {
+    opacity: 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .terminal-block-caret {
+    animation: none;
+  }
+}

@@ -38,7 +38,7 @@ html[data-mode-shift="restore"] main {
   will-change: transform;
 }
 html[data-mode-shift="restore"] main {
-  animation: site-comic-reveal 3.2s both;
+  animation: site-comic-reveal 5.1s both;
 }
 @media (prefers-reduced-motion: reduce) {
   html[data-mode-shift] main,
@@ -79,7 +79,7 @@ html[data-mode-shift="restore"] main {
     -20px 22px 0 #171717,
     0 30px 90px #0008;
   transform-origin: 8% 50%;
-  animation: comic-page-flip 1.3s 1.9s both;
+  animation: comic-page-flip 1.3s 3.8s both;
   overflow: hidden;
 }
 .comic-artwork {
@@ -135,7 +135,7 @@ html[data-mode-shift="restore"] main {
     transparent 13.7deg 24deg
   );
   mask-image: radial-gradient(ellipse, transparent 35%, black 95%);
-  animation: comic-lines 3.2s both;
+  animation: comic-lines 5.1s both;
 }
 @keyframes comic-cut {
   0% {
@@ -562,5 +562,65 @@ html[data-mode-shift="restore"] main {
 @media (prefers-reduced-motion: reduce) {
   .breach-sequence * {
     animation: none !important;
+  }
+}
+
+/* New working scenes join the original full-screen cuts, not a card layout. */
+.comic-shot-working {
+  background-image: none;
+  overflow: hidden;
+}
+.comic-working-art {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 42%;
+  transform-origin: 50% 40%;
+  animation: comic-working-zoom 650ms both;
+  animation-delay: inherit;
+}
+.comic-shot-experiment .comic-working-art {
+  object-position: 40% 53%;
+  transform-origin: 28% 48%;
+}
+.comic-shot-observe .comic-working-art {
+  object-position: 65% 35%;
+  transform-origin: 65% 35%;
+}
+.comic-shot-collaborate .comic-working-art {
+  object-position: 53% 40%;
+}
+.comic-shot-working .comic-cut-caption {
+  z-index: 1;
+}
+@keyframes comic-working-zoom {
+  0% {
+    transform: scale(1.8) rotate(-4deg);
+  }
+  28% {
+    transform: scale(1.18) rotate(1deg);
+  }
+  82% {
+    transform: scale(1.02) rotate(0);
+  }
+  100% {
+    transform: scale(1.08);
+  }
+}
+@media (max-width: 700px) {
+  .comic-shot-observe .comic-working-art {
+    object-position: 64% center;
+  }
+  .comic-shot-experiment .comic-working-art {
+    object-position: 22% center;
+  }
+  .comic-shot-collaborate .comic-working-art {
+    object-position: 55% center;
+  }
+  .comic-shot-focus .comic-working-art,
+  .comic-shot-create .comic-working-art {
+    object-position: 58% center;
   }
 }

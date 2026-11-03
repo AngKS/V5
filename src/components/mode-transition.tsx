@@ -27,7 +27,7 @@ export function ModeTransition({
     document.body.style.overflow = "hidden";
     dialog.current?.showModal();
     const commit = setTimeout(onCommit, mode === "breach" ? 650 : 800);
-    const finish = setTimeout(onFinish, mode === "breach" ? 2400 : 3200);
+    const finish = setTimeout(onFinish, mode === "breach" ? 2400 : 5100);
     const media = window.matchMedia("(prefers-reduced-motion: reduce)");
     const preferenceChanged = () => {
       if (media.matches) {
@@ -68,16 +68,34 @@ export function ModeTransition({
           <div className="comic-sequence">
             {[
               ["detail", "01 / LOOK CLOSER."],
-              ["servers", "02 / BUILD THE SYSTEM."],
-              ["audio", "03 / FIND THE SIGNAL."],
-              ["eyes", "04 / STAY CURIOUS."],
-              ["portrait", "05 / THE HUMAN BEHIND IT ALL."],
-            ].map(([scene, caption], index) => (
+              ["observe", "02 / CAPTURE THE MOMENT.", "/comics/observe.webp"],
+              ["servers", "03 / BUILD THE SYSTEM."],
+              [
+                "collaborate",
+                "04 / BUILD TOGETHER.",
+                "/comics/collaborate.webp",
+              ],
+              ["audio", "05 / FIND THE SIGNAL."],
+              ["experiment", "06 / TEST THE IDEA.", "/comics/experiment.webp"],
+              ["eyes", "07 / STAY CURIOUS."],
+              ["focus", "08 / FIND THE FLOW.", "/comics/focus.webp"],
+              ["create", "09 / KEEP CREATING.", "/comics/create.webp"],
+              ["portrait", "10 / THE HUMAN BEHIND IT ALL."],
+            ].map(([scene, caption, artwork], index) => (
               <div
-                className={`comic-shot comic-shot-${scene}`}
+                className={`comic-shot comic-shot-${scene}${artwork ? " comic-shot-working" : ""}`}
                 key={scene}
                 style={{ animationDelay: `${index * 380}ms` }}
               >
+                {artwork && (
+                  <img
+                    src={artwork}
+                    alt=""
+                    width={960}
+                    height={960}
+                    className="comic-working-art"
+                  />
+                )}
                 <span className="comic-cut-caption">{caption}</span>
               </div>
             ))}

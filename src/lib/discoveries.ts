@@ -25,6 +25,7 @@ export const STAMPS = [
   },
 ] as const;
 export type StampId = (typeof STAMPS)[number]["id"];
+export const BREACH_REPLAY_EVENT = "v5:replay-breach";
 export const STAMP_EVENT = "v5:discovery";
 export const STAMP_KEY = "v5:discovery-stamps:v1";
 let sessionStamps: StampId[] = [];
