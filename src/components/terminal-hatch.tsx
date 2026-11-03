@@ -4,11 +4,13 @@ import dynamic from "next/dynamic";
 import { awardStamp, readStamps, BREACH_REPLAY_EVENT } from "@/lib/discoveries";
 import { Suspense, useCallback, useEffect, useRef, useState } from "react";
 
-import "./terminal.css";
-import { ModeTransition } from "./mode-transition";
+import "./terminal-hatch.css";
 
 const Terminal = dynamic(() => import("./secret-terminal"));
 const CyberBleed = dynamic(() => import("./cyber-bleed"));
+const ModeTransition = dynamic(() =>
+  import("./mode-transition").then((module) => module.ModeTransition),
+);
 const THRESHOLD = 720;
 
 export function TerminalHatch() {
@@ -21,6 +23,7 @@ export function TerminalHatch() {
   const transitioning = useRef(false);
   const [pull, setPull] = useState(0);
   const trigger = useRef<HTMLButtonElement>(null);
+  const [atHatch, setAtHatch] = useState(false);
   const cooldown = useRef(0);
   const applyMode = useCallback((mode: "breach" | "restore") => {
     setBreached(mode === "breach");
@@ -98,7 +101,19 @@ export function TerminalHatch() {
   }, []);
 
   useEffect(() => {
-    if (open || transition) return;
+    const element = trigger.current;
+    if (!element) return;
+    const observer = new IntersectionObserver(([entry]) => {
+      setAtHatch(entry.isIntersecting);
+    });
+    observer.observe(element);
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    // Ordinary scrolling stays on the browser's fast path. Only intercept
+    // overscroll while the end-of-page hatch is actually in view.
+    if (!atHatch || open || transition) return;
     let distance = 0;
     let last = 0;
     let touch: { x: number; y: number } | null = null;
@@ -181,7 +196,7 @@ export function TerminalHatch() {
       window.removeEventListener("touchcancel", end);
       window.removeEventListener("scroll", scroll);
     };
-  }, [open, transition]);
+  }, [atHatch, open, transition]);
 
   return (
     <>

@@ -1,0 +1,113 @@
+:root {
+  --factory-paper: #efe9da;
+  --factory-ink: #193e54;
+  --factory-line: #98aaa9;
+  --factory-active: #cbdad2;
+  --factory-shadow: #122a3b40;
+  --factory-fold: #c7c0af;
+  --factory-label: "Courier New", monospace;
+}
+.about {
+  position: relative;
+}
+.page-peel {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 86px;
+  height: 86px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  z-index: 2;
+  color: var(--factory-ink);
+  overflow: visible;
+}
+.page-curl-art {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  transition:
+    width 0.35s ease,
+    height 0.35s ease;
+}
+.page-curl-art--bottom-right {
+  inset: auto 0 0 auto;
+  transform: rotate(180deg);
+}
+.page-curl-underlay {
+  position: absolute;
+  inset: 0;
+  background: #fff9e9;
+  clip-path: polygon(0 0, 100% 0, 0 100%);
+}
+.page-curl-comic {
+  position: absolute;
+  inset: 5px;
+  border: 2px solid #132f43;
+  background:
+    linear-gradient(#efd271 0 12%, transparent 12% 84%, #fff9e9 84%),
+    url("/media/comic-peek.webp") center / cover;
+  box-shadow: 3px 3px 0 #132f43;
+}
+.page-curl-art--bottom-right .page-curl-comic {
+  transform: rotate(180deg);
+}
+.page-curl-fold {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  filter: drop-shadow(2px 3px 2px #312c2440);
+}
+.page-peel:hover .page-curl-art,
+.page-peel:focus-visible .page-curl-art,
+.walk-return-flap:hover .page-curl-art,
+.walk-return-flap:focus-visible .page-curl-art {
+  width: 112%;
+  height: 112%;
+}
+.page-peel:focus-visible,
+.walk-return-flap:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+.peel-hint {
+  position: absolute;
+  bottom: 20px;
+  right: 85px;
+  white-space: nowrap;
+  background: var(--paper);
+  color: var(--ink);
+  padding: 6px 10px;
+  font-size: 12px;
+  opacity: 0;
+  transform: translateX(8px);
+  transition:
+    opacity 0.2s,
+    transform 0.2s;
+  pointer-events: none;
+}
+.page-peel:hover .peel-hint,
+.page-peel:focus-visible .peel-hint {
+  opacity: 1;
+  transform: none;
+}
+
+@media (max-width: 700px) {
+  .page-peel {
+    width: 72px;
+    height: 72px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .page-curl-art,
+  .peel-hint {
+    transition: none;
+  }
+}

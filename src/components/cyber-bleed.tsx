@@ -40,7 +40,7 @@ export default function CyberBleed({
     return () => document.documentElement.classList.remove("cyber-breach");
   }, [active]);
   useEffect(() => {
-    preload("/comic-transition.png", { as: "image" });
+    preload("/media/comic-transition.webp", { as: "image" });
     ["observe", "collaborate", "experiment", "focus", "create"].forEach(
       (scene) => preload(`/comics/${scene}.webp`, { as: "image" }),
     );

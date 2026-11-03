@@ -99,6 +99,9 @@ All credentials stay server-side. Never prefix secret keys with `NEXT_PUBLIC_` o
 
 See [`.env.example`](.env.example) for the configured defaults. GitHub metadata and Medium feeds are cached for one hour. Unavailable commit dates fall back to repository push dates and are labeled in the interface.
 
+Performance behavior, measured transfer sizes, and the `npm run media:optimize`
+workflow are documented in [docs/performance.md](docs/performance.md).
+
 ## Terminal and discoveries
 
 Keep scrolling past the footer to pull up the terminal, or use the “END OF TRANSMISSION” button. Escape, the close button, or `exit` closes it and enters breach mode. Restore returns to the original page; both mode transitions return the viewport to the top.

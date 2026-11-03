@@ -1,4 +1,5 @@
 "use client";
+import "./terminal.css";
 import { TerminalText } from "./terminal-text";
 import { Icon } from "@/components/icon";
 

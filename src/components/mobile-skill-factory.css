@@ -1,0 +1,352 @@
+.floorplan-dialog {
+  position: absolute;
+  z-index: 4;
+  inset: 0;
+  margin: 0;
+  border: 0;
+  padding: 0;
+  width: 100%;
+  max-width: none;
+  height: 100%;
+  max-height: none;
+  background: transparent;
+  overflow: hidden;
+  color: var(--factory-ink);
+}
+.floorplan-reveal {
+  position: relative;
+  height: 100%;
+  overflow: auto;
+  overscroll-behavior: auto;
+  background: var(--factory-paper);
+}
+.floorplan-floor {
+  min-height: 100%;
+  padding: clamp(20px, 4vw, 56px);
+  color: var(--factory-ink);
+  background-image:
+    linear-gradient(var(--factory-shadow) 1px, transparent 1px),
+    linear-gradient(90deg, var(--factory-shadow) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+.floorplan-header,
+.floorplan-footer {
+  display: flex;
+  justify-content: space-between;
+  gap: 24px;
+  align-items: center;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+.floorplan-header p,
+.floorplan-footer,
+.room-station,
+.room-number,
+.room-process,
+.floorplan-aisle,
+.floorplan-detail > span {
+  font-family: var(--factory-label);
+  font-size: 12px;
+}
+.floorplan-header p {
+  margin: 0 0 8px;
+}
+.floorplan-header h2 {
+  font:
+    700 clamp(30px, 4.5vw, 64px)/1 var(--font-display),
+    sans-serif;
+  margin: 0;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+}
+.floorplan-return-peel:focus-visible,
+.floorplan-room:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 4px;
+}
+.floorplan-plan {
+  max-width: 1400px;
+  margin: 30px auto 0;
+  border: 3px double var(--factory-ink);
+  padding: 12px;
+  background: var(--factory-paper);
+  box-shadow: 8px 8px 0 var(--factory-shadow);
+}
+.floorplan-aisle {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 12px 18px;
+  border-bottom: 2px dashed var(--factory-line);
+}
+.floorplan-rooms {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 28px;
+  padding: 22px 10px;
+  background: repeating-linear-gradient(
+    135deg,
+    transparent 0 8px,
+    var(--factory-shadow) 8px 9px
+  );
+}
+.floorplan-room {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  position: relative;
+  text-align: left;
+  padding: 18px;
+  border: 2px solid var(--factory-ink);
+  background: var(--factory-paper);
+  color: inherit;
+  cursor: pointer;
+  transition:
+    background 0.2s,
+    transform 0.2s;
+  min-width: 0;
+}
+.floorplan-room::before {
+  content: "";
+  position: absolute;
+  bottom: -5px;
+  left: 30px;
+  width: 32px;
+  height: 7px;
+  background: var(--factory-paper);
+  border-inline: 2px solid var(--factory-ink);
+}
+.floorplan-room[aria-pressed="true"] {
+  background: var(--factory-active);
+}
+.floorplan-room:hover {
+  transform: translateY(-3px);
+}
+.room-number {
+  display: inline-block;
+  border: 1px solid currentColor;
+  padding: 2px 5px;
+  margin-right: 10px;
+}
+.room-station {
+  display: inline;
+}
+.floorplan-room strong {
+  display: block;
+  font:
+    700 clamp(20px, 2.3vw, 32px)/1.05 var(--font-display),
+    sans-serif;
+  text-transform: uppercase;
+  overflow-wrap: break-word;
+}
+.room-process {
+  display: block;
+  margin-top: 10px;
+  font-size: 10px;
+}
+.floorplan-dialog .skill-machine {
+  width: 100%;
+  height: auto;
+  display: block;
+  margin: 10px 0;
+}
+.machine-wire {
+  stroke-dasharray: 5 5;
+  animation: factory-flow 2s linear infinite;
+}
+.machine-conveyor {
+  animation: factory-flow 1.5s linear infinite;
+}
+.machine-lamp {
+  animation: factory-pulse 2s ease-in-out infinite alternate;
+}
+.machine-scan {
+  animation: factory-scan 3s ease-in-out infinite alternate;
+}
+.floorplan-room:nth-child(even) .machine-lamp {
+  animation-delay: -0.8s;
+}
+.floorplan-pipe {
+  border-block: 3px double var(--factory-ink);
+  display: flex;
+  justify-content: space-around;
+  margin: 3px 10px 10px;
+  height: 12px;
+}
+.floorplan-pipe span {
+  width: 7px;
+  height: 16px;
+  border: 1px solid var(--factory-ink);
+  background: var(--factory-paper);
+  transform: translateY(-5px);
+}
+.floorplan-detail {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  max-width: 1400px;
+  margin: 24px auto;
+  padding: 18px 22px;
+  border-left: 4px solid var(--factory-ink);
+  background: var(--factory-paper);
+}
+.floorplan-detail > span {
+  flex: 0 0 200px;
+}
+.floorplan-detail p {
+  margin: 0;
+  font-size: 17px;
+}
+.floorplan-footer {
+  padding-bottom: 16px;
+}
+@keyframes factory-flow {
+  to {
+    stroke-dashoffset: -22;
+  }
+}
+@keyframes factory-pulse {
+  to {
+    opacity: 0.25;
+  }
+}
+@keyframes factory-scan {
+  to {
+    transform: translateY(40px);
+  }
+}
+@media (max-width: 700px) {
+  .page-peel {
+    width: 72px;
+    height: 72px;
+  }
+  .floorplan-floor {
+    padding: 20px 14px;
+  }
+  .floorplan-header {
+    align-items: flex-start;
+    gap: 12px;
+  }
+  .floorplan-header p {
+    font-size: 10px;
+  }
+  .floorplan-rooms {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+    padding: 18px 0;
+  }
+  .floorplan-plan {
+    padding: 8px;
+    margin-top: 22px;
+  }
+  .floorplan-room {
+    padding: 10px;
+  }
+  .room-station {
+    display: block;
+    font-size: 10px;
+    margin-top: 6px;
+  }
+  .floorplan-room strong {
+    font-size: 18px;
+  }
+  .room-process {
+    font-size: 9px;
+    line-height: 1.5;
+  }
+  .floorplan-detail {
+    display: block;
+    margin-block: 20px;
+    padding: 12px;
+  }
+  .floorplan-detail p {
+    margin-top: 8px;
+    font-size: 15px;
+  }
+  .floorplan-footer {
+    display: block;
+    font-size: 10px;
+  }
+  .floorplan-footer span {
+    display: block;
+    margin-top: 8px;
+  }
+  .floorplan-aisle {
+    font-size: 9px;
+    padding-inline: 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .peel-paper,
+  .peel-hint,
+  .floorplan-room {
+    transition: none;
+  }
+  .machine-wire,
+  .machine-conveyor,
+  .machine-lamp,
+  .machine-scan {
+    animation: none;
+  }
+}
+
+.floorplan-header {
+  position: relative;
+}
+
+/* The return corner mirrors the entry peel; the reveal itself is a clean wipe. */
+.floorplan-return-peel {
+  position: absolute;
+  z-index: 2;
+  top: 0;
+  left: 0;
+  width: 64px;
+  height: 64px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  overflow: clip;
+}
+.return-peel-underlay {
+  position: absolute;
+  inset: 0;
+  background: var(--paper);
+  clip-path: polygon(0 0, 100% 0, 0 100%);
+}
+.return-peel-paper {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    var(--factory-paper) 20%,
+    var(--factory-fold) 47%,
+    var(--factory-paper) 70%
+  );
+  clip-path: polygon(100% 0, 100% 100%, 0 100%);
+  transform: translate(-18px, -18px);
+  transition: transform 0.4s cubic-bezier(0.22, 0.8, 0.3, 1);
+}
+.floorplan-return-peel:hover .return-peel-paper,
+.floorplan-return-peel:focus-visible .return-peel-paper {
+  transform: translate(0, 0) rotate(6deg);
+}
+.floorplan-header {
+  padding-left: 30px;
+}
+@media (max-width: 700px) {
+  .floorplan-header {
+    padding-left: 42px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .return-peel-paper {
+    transition: none;
+  }
+}
+
+/* Hide immediately during the mode change, before React removes the feature. */
+.cyber-breach .page-peel,
+.cyber-breach .floorplan-dialog {
+  display: none;
+}

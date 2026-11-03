@@ -9,7 +9,8 @@
     "typecheck": "tsc --noEmit",
     "test": "tsx --test tests/*.test.ts",
     "format": "prettier --write src tests *.json *.ts README.md",
-    "files:upload": "tsx scripts/upload-files.ts"
+    "files:upload": "tsx scripts/upload-files.ts",
+    "media:optimize": "node scripts/optimize-media.mjs"
   },
   "dependencies": {
     "@ai-sdk/openai": "^4.0.108",

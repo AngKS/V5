@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Icon } from "./icon";
 
 const interests = [
@@ -14,12 +14,29 @@ const interests = [
 
 export function InterestsMarquee() {
   const [paused, setPaused] = useState(false);
+  const region = useRef<HTMLDivElement>(null);
+  const [active, setActive] = useState(false);
+  useEffect(() => {
+    let inView = false;
+    const sync = () => setActive(inView && !document.hidden);
+    const observer = new IntersectionObserver(([entry]) => {
+      inView = entry.isIntersecting;
+      sync();
+    });
+    if (region.current) observer.observe(region.current);
+    document.addEventListener("visibilitychange", sync);
+    return () => {
+      observer.disconnect();
+      document.removeEventListener("visibilitychange", sync);
+    };
+  }, []);
   return (
     <div
+      ref={region}
       className="ticker"
       role="region"
       aria-label="Areas of interest"
-      data-paused={paused}
+      data-paused={paused || !active}
     >
       <div className="ticker-window">
         <div className="ticker-track">

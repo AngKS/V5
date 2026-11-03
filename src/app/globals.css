@@ -15,7 +15,7 @@ body {
   margin: 0;
   background: var(--paper);
   color: var(--ink);
-  font-family: "DM Sans", sans-serif;
+  font-family: var(--font-body), sans-serif;
   font-size: 15px;
 }
 a {
@@ -50,13 +50,13 @@ button:focus-visible {
 }
 .wordmark {
   font:
-    800 36px/0.8 "Barlow Condensed",
+    800 36px/0.8 var(--font-display),
     sans-serif;
   letter-spacing: -1.5px;
 }
 .wordmark span {
   font:
-    12px "DM Sans",
+    12px var(--font-body),
     sans-serif;
   vertical-align: top;
   letter-spacing: 0;
@@ -113,7 +113,7 @@ p {
 h1,
 h2,
 h3 {
-  font-family: "Barlow Condensed", sans-serif;
+  font-family: var(--font-display), sans-serif;
   font-weight: 800;
   letter-spacing: -0.025em;
 }
@@ -139,7 +139,7 @@ h1 {
   border-block: 2px solid;
   background: var(--accent);
   font:
-    700 24px "Barlow Condensed",
+    700 24px var(--font-display),
     sans-serif;
   color: var(--paper);
 }
@@ -338,7 +338,7 @@ h2 {
   top: 12px;
   left: 14px;
   font:
-    700 26px "Barlow Condensed",
+    700 26px var(--font-display),
     sans-serif;
 }
 .project-arrow {
@@ -440,7 +440,7 @@ h2 {
 }
 .contact-link {
   font:
-    800 60px "Barlow Condensed",
+    800 60px var(--font-display),
     sans-serif;
   border-bottom: 3px solid;
 }
@@ -525,7 +525,7 @@ footer .eyebrow {
     background: transparent;
     padding: 8px 12px;
     font:
-      700 18px "Barlow Condensed",
+      700 18px var(--font-display),
       sans-serif;
   }
   .mobile-nav {
@@ -542,7 +542,7 @@ footer .eyebrow {
   }
   .mobile-nav a {
     font:
-      700 30px "Barlow Condensed",
+      700 30px var(--font-display),
       sans-serif;
   }
   .mobile-nav .mobile-resume-button {
@@ -699,7 +699,7 @@ footer .eyebrow {
 }
 .panda-intro-art p {
   font:
-    800 clamp(36px, 8vw, 64px)/1 "Barlow Condensed",
+    800 clamp(36px, 8vw, 64px)/1 var(--font-display),
     sans-serif;
   margin-bottom: 12px;
   color: var(--ink);
@@ -959,7 +959,7 @@ footer .eyebrow {
   inset: 0;
   z-index: -1;
   pointer-events: none;
-  background: url("/panda-wallpaper.webp") repeat center top / 660px 660px;
+  background: url("/media/panda-wallpaper.webp") repeat center top / 660px 660px;
   mix-blend-mode: multiply;
   opacity: 0.13;
   mask-image: linear-gradient(
@@ -985,4 +985,41 @@ footer .eyebrow {
     background-size: 480px 480px;
     opacity: 0.1;
   }
+}
+
+/* A loud, inked punctuation mark for the writing headline. */
+.comic-exclamation {
+  position: relative;
+  display: inline-block;
+  isolation: isolate;
+  margin-left: 0.08em;
+  color: #e53935;
+  font-size: 1.15em;
+  font-style: italic;
+  transform: rotate(12deg);
+  -webkit-text-stroke: 1px var(--ink);
+  text-shadow: 3px 3px #f2cd60;
+}
+.comic-exclamation::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: 15% -0.12em 2%;
+  background: #f2cd6045;
+  clip-path: polygon(
+    50% 0,
+    62% 24%,
+    94% 10%,
+    78% 40%,
+    100% 58%,
+    73% 65%,
+    82% 100%,
+    50% 78%,
+    18% 100%,
+    27% 65%,
+    0 58%,
+    22% 40%,
+    6% 10%,
+    38% 24%
+  );
 }

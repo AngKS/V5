@@ -1,5 +1,7 @@
+import { CareerOverview } from "@/components/career-overview";
 import { PortfolioWebMCP } from "@/components/portfolio-webmcp";
 import type { Metadata } from "next";
+import { unstable_rethrow } from "next/navigation";
 import { PagePeel } from "@/components/page-peel";
 import { InterestsMarquee } from "@/components/interests-marquee";
 import { Icon } from "@/components/icon";
@@ -8,13 +10,26 @@ import { Discoveries } from "@/components/discoveries";
 import { TerminalHatch } from "@/components/terminal-hatch";
 import { Header } from "@/components/header";
 import { ProjectsCarousel } from "@/components/projects-carousel";
-import { profile, experience } from "@/content/profile";
+import { profile } from "@/content/profile";
 import { getWriting } from "@/lib/content";
+import { getRankedProjects, paginateProjects } from "@/lib/projects";
 export const revalidate = 3600;
 export const metadata: Metadata = { alternates: { canonical: "/" } };
 
 export default async function Home() {
-  const writing = await getWriting();
+  const [writing, initialProjects] = await Promise.all([
+    getWriting(),
+    getRankedProjects()
+      .then((projects) => paginateProjects(projects, 0, 3))
+      .catch((error: unknown) => {
+        unstable_rethrow(error);
+        console.warn(
+          "Initial projects unavailable:",
+          error instanceof Error ? error.message : "Unknown error",
+        );
+        return null;
+      }),
+  ]);
   return (
     <>
       <PortfolioWebMCP />
@@ -123,50 +138,7 @@ export default async function Home() {
               </a>
             </div>
           </div>
-          <div className="experience">
-            <div>
-              <span className="eyebrow">THE STORY SO FAR</span>
-              <h3>
-                EVERY CHAPTER
-                <br />
-                BUILDS ON THE LAST<span className="glitch-dot">.</span>
-              </h3>
-            </div>
-            <div className="experience-content">
-              {experience.length ? (
-                experience.map((item) => (
-                  <article
-                    className="role"
-                    key={`${item.company}-${item.role}-${item.dates}`}
-                  >
-                    <span className="eyebrow">
-                      {item.dates}
-                      {item.current ? " · CURRENT" : ""}
-                    </span>
-                    <h4>{item.role}</h4>
-                    <p>{item.company}</p>
-                    <p>{item.description}</p>
-                  </article>
-                ))
-              ) : (
-                <>
-                  <p className="editorial small">
-                    For the chapters on where
-                    <br />
-                    I’ve worked, meet me on LinkedIn.
-                  </p>
-                  <a
-                    className="button"
-                    href={profile.linkedin}
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    EXPLORE MY EXPERIENCE <Icon name="arrow-up-right" />
-                  </a>
-                </>
-              )}
-            </div>
-          </div>
+          <CareerOverview />
           <PagePeel />
         </section>
         <section id="portfolio" className="portfolio section">
@@ -183,7 +155,7 @@ export default async function Home() {
                 Explore my projects on GitHub.
               </p>
             </div>
-            <ProjectsCarousel />
+            <ProjectsCarousel initialData={initialProjects} />
             <a
               className="text-link"
               href={profile.github}
@@ -200,7 +172,7 @@ export default async function Home() {
             <h2>
               THINKING
               <br />
-              OUT LOUD<span className="accent glitch-dot">.</span>
+              OUT LOUD<span className="comic-exclamation">!</span>
             </h2>
             <div>
               {writing.articles.length ? (

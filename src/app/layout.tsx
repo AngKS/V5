@@ -1,13 +1,43 @@
 import type { Metadata } from "next";
 import { site } from "@/content/site";
-import "@fontsource/barlow-condensed/800.css";
-import "@fontsource/barlow-condensed/700.css";
-import "@fontsource/dm-sans/400.css";
-import "@fontsource/dm-sans/500.css";
+import localFont from "next/font/local";
 import "./globals.css";
 import "@/components/discoveries.css";
 import { PandaIntro } from "@/components/panda-intro";
 import { MotionProvider } from "@/components/motion";
+
+const bodyFont = localFont({
+  src: [
+    {
+      path: "../../node_modules/@fontsource/dm-sans/files/dm-sans-latin-400-normal.woff2",
+      weight: "400",
+      style: "normal",
+    },
+    {
+      path: "../../node_modules/@fontsource/dm-sans/files/dm-sans-latin-500-normal.woff2",
+      weight: "500",
+      style: "normal",
+    },
+  ],
+  variable: "--font-body",
+  display: "swap",
+});
+const displayFont = localFont({
+  src: [
+    {
+      path: "../../node_modules/@fontsource/barlow-condensed/files/barlow-condensed-latin-700-normal.woff2",
+      weight: "700",
+      style: "normal",
+    },
+    {
+      path: "../../node_modules/@fontsource/barlow-condensed/files/barlow-condensed-latin-800-normal.woff2",
+      weight: "800",
+      style: "normal",
+    },
+  ],
+  variable: "--font-display",
+  display: "swap",
+});
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
   title: { default: site.title, template: "%s | Kah Shin Ang" },
@@ -55,7 +85,7 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en">
+    <html lang="en" className={`${bodyFont.variable} ${displayFont.variable}`}>
       <head>
         <link
           rel="alternate"

@@ -10,7 +10,11 @@ import {
 } from "motion/react";
 import type { ProjectPage } from "@/lib/projects";
 
-export function ProjectsCarousel() {
+export function ProjectsCarousel({
+  initialData,
+}: {
+  initialData: ProjectPage | null;
+}) {
   const region = useRef<HTMLDivElement>(null);
   const viewport = useRef<HTMLDivElement>(null);
   const navigating = useRef(false);
@@ -19,12 +23,29 @@ export function ProjectsCarousel() {
   const reduced = useReducedMotion();
   const [page, setPage] = useState(0);
   const [pageSize, setPageSize] = useState(3);
-  const [data, setData] = useState<ProjectPage | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [data, setData] = useState<ProjectPage | null>(initialData);
+  const [loading, setLoading] = useState(!initialData);
   const [error, setError] = useState("");
   const [retry, setRetry] = useState(0);
   const [direction, setDirection] = useState(1);
-  const cache = useRef(new Map<string, ProjectPage>());
+  const [cache] = useState(
+    () =>
+      new Map<string, ProjectPage>(
+        initialData
+          ? [
+              ["3:0", initialData],
+              [
+                "1:0",
+                {
+                  ...initialData,
+                  items: initialData.items.slice(0, 1),
+                  pageSize: 1,
+                },
+              ],
+            ]
+          : [],
+      ),
+  );
   const touch = useRef<{ x: number; y: number } | null>(null);
   useEffect(() => {
     const media = matchMedia("(max-width: 700px)");
@@ -38,15 +59,15 @@ export function ProjectsCarousel() {
     return () => media.removeEventListener("change", resize);
   }, []);
   useEffect(() => {
-    if (!visible) return;
     const key = `${pageSize}:${page}`;
-    const cached = cache.current.get(key);
+    const cached = cache.get(key);
     setError("");
     if (cached) {
       setData(cached);
       setLoading(false);
       return;
     }
+    if (!visible) return;
     const controller = new AbortController();
     setLoading(true);
     fetch(`/api/projects?page=${page}&pageSize=${pageSize}`, {
@@ -59,7 +80,7 @@ export function ProjectsCarousel() {
       })
       .then((result) => {
         if (!controller.signal.aborted) {
-          cache.current.set(key, result);
+          cache.set(key, result);
           setData(result);
           setLoading(false);
         }
@@ -72,7 +93,7 @@ export function ProjectsCarousel() {
         }
       });
     return () => controller.abort();
-  }, [visible, page, pageSize, retry]);
+  }, [cache, visible, page, pageSize, retry]);
   const totalPages = data ? Math.ceil(data.total / pageSize) : 0;
   const go = useCallback(
     (next: number) => {
@@ -213,7 +234,11 @@ export function ProjectsCarousel() {
           </div>
         ) : loading && !data ? (
           <div role="status">
-            <PanelLoader />
+            {visible ? (
+              <PanelLoader />
+            ) : (
+              <div className="repo-message">Loading projects…</div>
+            )}
           </div>
         ) : data?.total === 0 ? (
           <div className="repo-message">No public projects to show yet.</div>

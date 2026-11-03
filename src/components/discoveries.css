@@ -143,7 +143,7 @@
   color: var(--paper);
   -webkit-text-stroke: 1px var(--ink);
   font:
-    800 clamp(100px, 18vw, 220px)/1 "Barlow Condensed",
+    800 clamp(100px, 18vw, 220px)/1 var(--font-display),
     sans-serif;
 }
 .detector-field small {
