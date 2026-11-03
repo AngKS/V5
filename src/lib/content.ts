@@ -1,44 +1,4 @@
 import Parser from "rss-parser";
-import { featuredProjects } from "@/content/profile";
-
-export async function getProjects() {
-  return Promise.all(
-    featuredProjects.map(async (project) => {
-      const fallback = {
-        ...project,
-        url: `https://github.com/AngKS/${project.repo}`,
-        language: null as string | null,
-      };
-      try {
-        const response = await fetch(
-          `https://api.github.com/repos/AngKS/${project.repo}`,
-          {
-            headers: {
-              Accept: "application/vnd.github+json",
-              ...(process.env.GITHUB_TOKEN
-                ? { Authorization: `Bearer ${process.env.GITHUB_TOKEN}` }
-                : {}),
-            },
-            next: { revalidate: 3600 },
-            signal: AbortSignal.timeout(5000),
-          },
-        );
-        if (!response.ok) return fallback;
-        const data = await response.json();
-        return {
-          ...fallback,
-          language: typeof data.language === "string" ? data.language : null,
-          description:
-            typeof data.description === "string" && data.description
-              ? data.description
-              : fallback.description,
-        };
-      } catch {
-        return fallback;
-      }
-    }),
-  );
-}
 export type Article = { title: string; url: string; date: string };
 export async function getWriting(): Promise<{
   url: string | null;

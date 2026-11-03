@@ -841,3 +841,223 @@ footer .eyebrow {
     font-size: 48px;
   }
 }
+
+.repo-carousel {
+  margin-bottom: 32px;
+}
+.repo-carousel:focus-visible {
+  outline: 2px solid var(--paper);
+  outline-offset: 8px;
+}
+.repo-toolbar {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 18px;
+  color: #d4d3cd;
+}
+.repo-toolbar .eyebrow {
+  font-size: 9px;
+}
+.repo-window {
+  overflow: hidden;
+  touch-action: pan-y;
+  min-height: 490px;
+}
+.repo-cards {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 22px;
+}
+.repo-card {
+  background: var(--paper);
+  color: var(--ink);
+  min-height: 490px;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--paper);
+}
+.repo-card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px 22px;
+  border-bottom: 1px solid var(--ink);
+}
+.repo-rank {
+  font:
+    700 25px "Barlow Condensed",
+    sans-serif;
+}
+.repo-stars {
+  border: 1px solid var(--ink);
+  border-radius: 30px;
+  padding: 5px 12px;
+  font-size: 12px;
+}
+.repo-symbol {
+  background: var(--accent);
+  color: var(--paper);
+  height: 110px;
+  display: grid;
+  place-items: center;
+  font:
+    700 60px "Barlow Condensed",
+    sans-serif;
+}
+.repo-details {
+  padding: 24px 22px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+.repo-details > .eyebrow {
+  font-size: 9px;
+}
+.repo-details h3 {
+  font-size: 31px;
+  line-height: 1.05;
+  margin: 14px 0;
+  overflow-wrap: anywhere;
+}
+.repo-details h3 a:hover {
+  color: var(--accent);
+}
+.repo-details p {
+  font-size: 13px;
+  line-height: 1.65;
+  color: #454540;
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  margin-bottom: 24px;
+}
+.repo-card-bottom {
+  border-top: 1px solid #aaa;
+  padding-top: 16px;
+  margin-top: auto;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: space-between;
+  font-size: 9px;
+}
+.repo-card-bottom a {
+  font-weight: 500;
+}
+.repo-pagination {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 14px;
+  border-block: 1px solid #555;
+  padding: 18px 0;
+  margin-top: 22px;
+}
+.repo-pagination button,
+.repo-message button {
+  cursor: pointer;
+  color: var(--paper);
+  background: transparent;
+  border: 1px solid #888;
+  padding: 12px 18px;
+  min-height: 44px;
+  font-size: 11px;
+  letter-spacing: 1px;
+}
+.repo-pagination button:hover:not(:disabled),
+.repo-message button:hover {
+  background: var(--accent);
+}
+.repo-pagination button:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+.repo-page-status {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font-size: 12px;
+}
+.repo-page-status select {
+  background: var(--ink);
+  color: var(--paper);
+  padding: 8px;
+  border: 1px solid #888;
+  min-height: 44px;
+}
+.repo-carousel :is(button, a, select):focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 4px;
+}
+.repo-note {
+  font-size: 11px;
+  color: #ccc;
+  margin-top: 12px;
+  line-height: 1.5;
+}
+.repo-message {
+  min-height: 490px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+.repo-skeleton {
+  min-height: 490px;
+  border: 1px solid #555;
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+.repo-skeleton span {
+  display: block;
+  background: #333;
+  height: 20px;
+}
+.repo-skeleton span:first-child {
+  height: 180px;
+}
+@media (max-width: 1000px) {
+  .repo-cards {
+    gap: 14px;
+  }
+  .repo-details {
+    padding: 20px 16px;
+  }
+  .repo-details h3 {
+    font-size: 27px;
+  }
+}
+@media (max-width: 700px) {
+  .repo-cards {
+    grid-template-columns: 1fr;
+  }
+  .repo-card,
+  .repo-skeleton,
+  .repo-window,
+  .repo-message {
+    min-height: 460px;
+  }
+  .repo-toolbar {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .repo-pagination button {
+    padding: 12px;
+  }
+  .repo-pagination button span {
+    display: none;
+  }
+  .repo-page-status {
+    gap: 10px;
+    font-size: 11px;
+  }
+  .repo-details h3 {
+    font-size: 34px;
+  }
+}

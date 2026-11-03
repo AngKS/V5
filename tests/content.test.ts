@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { getProjects, getWriting } from "../src/lib/content";
+import { getWriting } from "../src/lib/content";
 
 test("content integrations tolerate outages and validate external input", async () => {
   const originalFetch = globalThis.fetch;
@@ -13,14 +13,6 @@ test("content integrations tolerate outages and validate external input", async 
     globalThis.fetch = async () => {
       throw new Error("Offline");
     };
-    const fallback = await getProjects();
-    assert.equal(fallback.length, 3);
-    assert.ok(
-      fallback.every(
-        (item) =>
-          item.description && item.url.startsWith("https://github.com/AngKS/"),
-      ),
-    );
     process.env.MEDIUM_PROFILE_URL = "https://medium.com/@example";
     assert.deepEqual(await getWriting(), {
       url: "https://medium.com/@example",

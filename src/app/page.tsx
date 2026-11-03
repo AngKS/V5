@@ -1,12 +1,11 @@
 import Image from "next/image";
 import { Header } from "@/components/header";
-import { ComicArt } from "@/components/art";
-import { Panel } from "@/components/motion";
+import { ProjectsCarousel } from "@/components/projects-carousel";
 import { profile, experience } from "@/content/profile";
-import { getProjects, getWriting } from "@/lib/content";
+import { getWriting } from "@/lib/content";
 export const revalidate = 3600;
 export default async function Home() {
-  const [projects, writing] = await Promise.all([getProjects(), getWriting()]);
+  const writing = await getWriting();
   return (
     <>
       <a className="skip-link" href="#main">
@@ -170,41 +169,11 @@ export default async function Home() {
                 Experiments that became projects.
                 <br />
                 Questions that became code.
-                <br />A few things from my GitHub.
+                <br />
+                Explore my projects on GitHub.
               </p>
             </div>
-            <div className="project-grid">
-              {projects.map((project, index) => (
-                <Panel className="project" key={project.repo}>
-                  <a
-                    className="project-art"
-                    href={project.url}
-                    target="_blank"
-                    rel="noreferrer"
-                    aria-label={`View ${project.repo} on GitHub`}
-                  >
-                    <span className="project-number">0{index + 1}</span>
-                    <ComicArt kind={project.art} />
-                    <span className="project-arrow">↗</span>
-                  </a>
-                  <div className="project-body">
-                    <span className="eyebrow">{project.category}</span>
-                    <h3>
-                      <a href={project.url} target="_blank" rel="noreferrer">
-                        {project.title}
-                      </a>
-                    </h3>
-                    <p>{project.description}</p>
-                    <div className="project-footer">
-                      <span>{project.language || "OPEN SOURCE"}</span>
-                      <a href={project.url} target="_blank" rel="noreferrer">
-                        VIEW REPOSITORY ↗
-                      </a>
-                    </div>
-                  </div>
-                </Panel>
-              ))}
-            </div>
+            <ProjectsCarousel />
             <a
               className="text-link"
               href={profile.github}

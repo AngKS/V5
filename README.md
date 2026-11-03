@@ -28,8 +28,8 @@ entrances, and interactive hover effects.
   Standard LinkedIn sign-in access does not provide full employment history;
   automatic position syncing requires a supported, approved integration.
 - **Portfolio:** curated current projects from https://github.com/AngKS.
-  Fetch metadata server-side and cache it; maintain explicit featured-project
-  selection rather than displaying the entire repository list.
+  Fetch metadata server-side and cache it; rank public, non-fork, non-archived repositories by stars, then latest
+  default-branch commit.
 - **Writing:** Medium article previews linking to the original articles, populated
   through a server-side RSS fetch once the user supplies their Medium profile.
   The Medium account is still being set up.
@@ -56,7 +56,7 @@ Use `npm run build` for a production build and `npm run typecheck` for TypeScrip
 
 ## Content configuration
 
-Edit `src/content/profile.ts` for contact details, featured repositories, and
+Edit `src/content/profile.ts` for contact details and
 verified experience entries. Email and resume links were carried forward from the
 existing site and should be confirmed before production launch. The introduction
 is based on the owner's supplied interests; the illustrations are original
@@ -64,7 +64,7 @@ conceptual artwork, not screenshots of the featured projects.
 
 Copy `.env.example` to `.env.local` when configuring Medium or an optional GitHub
 token. Tokens remain server-side. GitHub metadata and Medium RSS are cached for
-one hour; project descriptions fall back to checked-in content if GitHub fails.
+one hour; the carousel offers a retry if the repository catalog cannot be fetched.
 Medium cards link to original stories without injecting feed HTML. With no
 Medium profile configured, the page shows a coming-soon message. Experience
 links to LinkedIn until verified entries are supplied.
@@ -90,3 +90,19 @@ tab session, bypasses deep links and reduced-motion preferences, and cleans up
 its timer and listeners. Page content is inert only while the intro is active;
 no body scrolling styles are changed. Clearing `v5:panda-intro-seen` in session
 storage lets developers replay it during QA. Easter eggs remain deferred.
+
+## Project carousel
+
+`/api/projects?page=0&pageSize=3` returns a page of globally ranked public
+repositories (three per desktop page, one on mobile). Forks, archived repositories,
+and empty repositories are excluded. Stars sort descending, followed by the latest
+default-branch commit's committer date, then repository name for stable ties.
+The catalog and individual GitHub responses are cached for one hour. Commit
+lookups run at most four at a time. Unavailable commit dates fall back to the
+repository push timestamp and are labelled in the UI. Configure a server-only
+`GITHUB_TOKEN` for a higher GitHub rate limit.
+
+The browser requests nothing until the carousel approaches the viewport, fetches
+subsequent pages on demand, and retains visited pages locally for the mounted
+carousel. Arrow buttons, a page selector, keyboard arrows on the carousel region,
+and horizontal touch swipes navigate. Motion transitions honor reduced motion.
