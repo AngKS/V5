@@ -269,6 +269,22 @@ export default async function Home() {
               <span className="eyebrow">MADE OF CURIOSITY & CODE.</span>
             </footer>
             <Discoveries />
+            <div
+              hidden
+              dangerouslySetInnerHTML={{
+                __html: `<!--
+  H   H  IIIII  N   N  TTTTT
+  H   H    I    NN  N    T
+  HHHHH    I    N N N    T
+  H   H    I    N  NN    T
+  H   H  IIIII  N   N    T
+
+  🕵️ Discovery passport: one last stamp? 🧩
+  🧭 Try getting lost. Invent a path in the address bar;
+  sometimes a page that isn't here has something to find. ✨
+-->`,
+              }}
+            />
           </div>
         </section>
       </main>
