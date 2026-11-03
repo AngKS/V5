@@ -1,46 +1,23 @@
 # V5 — Kah Shin’s portfolio
 
-A comic-inspired personal portfolio with a second, cyberpunk side hiding beneath the page. Built with Next.js, TypeScript, Motion, and Vercel.
+A comic-inspired personal portfolio showcasing my projects, interests, and work. Built with Next.js, TypeScript, Motion, and Vercel.
 
 **[Visit the live portfolio](https://thatasiandude.com)** · [Report an issue](https://github.com/AngKS/V5/issues)
 
 ## Screenshots
 
-### The comic side
-
 Bold typography, cobalt accents, panda artwork, and an organic portrait frame.
 
 ![Desktop portfolio hero](docs/screenshots/desktop.webp)
 
-### The other side
-
-Discover the auxiliary terminal to unlock neon circuitry, Matrix rain, and a cybernetic portrait. Restore the original page through a full-screen monochrome comic sequence with rapid cuts, extreme zooms, and a 3D page flip.
-
-![Portfolio in cybernetic breach mode](docs/screenshots/breach.webp)
-
-### Auxiliary terminal
-
-A virtual filesystem and optional AI-powered Q&A about Kah Shin’s public portfolio facts.
-
-![Auxiliary terminal with its command manual](docs/screenshots/terminal.webp)
-
-### Mobile
-
-Responsive navigation, a resume shortcut, swipeable projects, and a fullscreen terminal.
-
-<img src="docs/screenshots/mobile.webp" alt="Mobile portfolio hero" width="390" />
-
-Screenshots capture the local application; animated effects are best experienced on the live site.
+The screenshot captures the local application; explore the live site for the full experience.
 
 ## Features
 
 - Responsive introduction, LinkedIn experience link, project carousel, writing section, and contact links.
 - GitHub projects ranked by stars, then latest default-branch commit; lazy loading, pagination, touch swipes, and horizontal trackpad navigation.
 - Medium RSS integration, with a coming-soon state until a profile is configured.
-- Animated panda introduction and a page-corner reveal of a skills factory in normal mode.
-- An elastic footer pull that reveals a terminal with a typed boot sequence, command history, and highlighted responses.
-- Breach mode with neon panda stencils, circuit traces, a cybernetic portrait, chromatic glitches, and section-level Matrix rain.
-- A discovery passport saved locally in the visitor’s browser. The collected “Other side” stamp can replay the breach transition.
+- Animated panda introduction and illustrated interests.
 - Comic loading animation, custom “Object not detected” 404, and an engine-room link to this repository.
 - Reduced-motion support, keyboard controls, and SVG icons.
 
@@ -60,7 +37,7 @@ cp .env.example .env.local
 npm run dev
 ```
 
-Open [localhost:3005](http://localhost:3005). The portfolio and local terminal commands work without an OpenAI key.
+Open [localhost:3005](http://localhost:3005). The portfolio works without an OpenAI key.
 
 ```sh
 npm run typecheck
@@ -72,15 +49,13 @@ npm run build
 
 Replace the personal content and artwork before publishing your own portfolio.
 
-| Location                             | Purpose                                                 |
-| ------------------------------------ | ------------------------------------------------------- |
-| `src/content/profile.ts`             | Contact details, social links, and verified experience  |
-| `src/content/terminal-knowledge.ts`  | Public facts used by Q&A                                |
-| `src/lib/files.ts`                   | Resume fallback and public file handling                |
-| `src/components/header.tsx`          | Navigation and mobile resume shortcut                   |
-| `src/components/mode-transition.tsx` | Comic cut-scenes and mode transitions                   |
-| `public/`                            | Portraits, comic illustrations, and other visual assets |
-| `src/app/globals.css`                | Base colors, typography, and responsive layout          |
+| Location                    | Purpose                                                 |
+| --------------------------- | ------------------------------------------------------- |
+| `src/content/profile.ts`    | Contact details, social links, and verified experience  |
+| `src/lib/files.ts`          | Resume fallback and public file handling                |
+| `src/components/header.tsx` | Navigation and mobile resume shortcut                   |
+| `public/`                   | Portraits, comic illustrations, and other visual assets |
+| `src/app/globals.css`       | Base colors, typography, and responsive layout          |
 
 Experience links to LinkedIn until verified entries are supplied. No automatic LinkedIn employment-history sync is implemented.
 
@@ -92,7 +67,7 @@ All credentials stay server-side. Never prefix secret keys with `NEXT_PUBLIC_` o
 | ----------------------- | ----------------------------------------------------------------------------- |
 | `GITHUB_TOKEN`          | Optional higher rate limit for GitHub metadata                                |
 | `MEDIUM_PROFILE_URL`    | Optional Medium profile for article previews                                  |
-| `OPENAI_API_KEY`        | Enables terminal Q&A                                                          |
+| `OPENAI_API_KEY`        | Enables optional AI responses                                                 |
 | `OPENAI_MODEL`          | Selects the OpenAI model; review provider availability and pricing before use |
 | `BLOB_READ_WRITE_TOKEN` | Owner-only script credential for uploading public portfolio files             |
 | `PORTFOLIO_BLOB_URL`    | Public Blob store origin                                                      |
@@ -101,27 +76,6 @@ See [`.env.example`](.env.example) for the configured defaults. GitHub metadata 
 
 Performance behavior, measured transfer sizes, and the `npm run media:optimize`
 workflow are documented in [docs/performance.md](docs/performance.md).
-
-## Terminal and discoveries
-
-Keep scrolling past the footer to pull up the terminal, or use the “END OF TRANSMISSION” button. Escape, the close button, or `exit` closes it and enters breach mode. Restore returns to the original page; both mode transitions return the viewport to the top.
-
-```text
-ls                    List available files
-cat hello.txt         A message from the human behind the code
-cat USER_MANUAL.md     Read the terminal manual
-cat resume.pdf        Open the resume
-help / man            Show instructions
-qn <question>         Ask about Kah Shin’s public work and interests
-clear                 Clear the output
-exit                  Close the terminal
-```
-
-This is a virtual filesystem, not a shell. Only `qn` sends a question and curated public facts to OpenAI. No conversation history is sent, no AI tools are enabled, and provider response storage is disabled. AI answers may be imperfect. The info button beside the command input explains this disclosure.
-
-Questions are capped at 600 characters, responses at 1,200 output tokens (including reasoning), with a 25-second timeout and no automatic retries. The API rejects cross-origin browser requests and oversized bodies. Its 20-request/minute per-instance limiter is not a distributed spending cap; configure provider budgets and production rate limiting when enabling a paid key.
-
-Discovery stamps use `v5:discovery-stamps:v1` in localStorage; breach state uses sessionStorage. Neither is sent to the server. Section rain pauses offscreen and while the tab is hidden. Reduced motion bypasses cinematic transitions and disables animated rain.
 
 ## Portfolio files
 
@@ -161,7 +115,7 @@ unsupported browsers. Native availability depends on browser support and policy.
 For agents without WebMCP, `/llms.txt` links to `/api/agent`, its public JSON
 resources, and the existing project API. These are HTTP resources, not a remote
 MCP server. `src/content/agent-info.ts` holds the public facts; it never exports
-internal terminal instructions. LinkedIn career and education are a manually reviewed snapshot (2026-11-03), not an automatic sync. Missing details and resume text are explicitly
+internal implementation instructions. LinkedIn career and education are a manually reviewed snapshot (2026-11-03), not an automatic sync. Missing details and resume text are explicitly
 marked as unavailable. Optional feeds retain the site's one-hour cache behavior.
 
 ## Contributing

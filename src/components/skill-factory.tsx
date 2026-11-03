@@ -176,6 +176,8 @@ export default function SkillFactory({ onClose }: { onClose: () => void }) {
   const canvas = useRef<HTMLCanvasElement>(null);
   const { painted, unavailable } = useWalkingCutout(video, canvas);
   const desiredTime = useRef(0);
+  const seekFrame = useRef(0);
+  useEffect(() => () => cancelAnimationFrame(seekFrame.current), []);
   const closingRef = useRef(false);
   const returnTop = useRef(0);
   const [closing, setClosing] = useState(false);
@@ -301,7 +303,7 @@ export default function SkillFactory({ onClose }: { onClose: () => void }) {
                   "polygon(100% 0%, 100% 0%, 100% 100%, 0% 100%, 0% 100%)",
                   "polygon(100% 100%, 100% 100%, 100% 100%, 100% 100%, 100% 100%)",
                 ]
-              : "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%, 0% 0%)",
+              : "none",
           }}
           transition={{ duration: reduced ? 0 : 0.75, ease: [0.65, 0, 0.2, 1] }}
           onAnimationComplete={() => {
@@ -338,15 +340,15 @@ export default function SkillFactory({ onClose }: { onClose: () => void }) {
             }}
             onError={() => setFailed(true)}
             onSeeked={() => {
-              const media = video.current;
-              if (
-                media &&
-                Math.abs(media.currentTime - desiredTime.current) > 1 / 60
-              )
-                media.currentTime = desiredTime.current;
+              // Let the cutout consume this decoded frame before another seek.
+              cancelAnimationFrame(seekFrame.current);
+              seekFrame.current = requestAnimationFrame(() => {
+                if (!closingRef.current && !staticMode)
+                  seekToProgress(sceneProgress.get());
+              });
             }}
           />
-          {!painted && (
+          {(!painted || staticMode) && (
             // A transparent first frame also serves reduced-motion / GPU fallback.
             // eslint-disable-next-line @next/next/no-img-element
             <img
@@ -363,7 +365,7 @@ export default function SkillFactory({ onClose }: { onClose: () => void }) {
             width={1280}
             height={720}
             aria-hidden="true"
-            hidden={!painted}
+            hidden={!painted || staticMode}
           />
           {!staticMode && (
             <div className="walk-finale" aria-hidden="true">

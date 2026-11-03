@@ -8,6 +8,7 @@ import {
   useInView,
   useReducedMotion,
 } from "motion/react";
+import { formatProjectDate } from "@/lib/project-date";
 import type { ProjectPage } from "@/lib/projects";
 
 export function ProjectsCarousel({
@@ -292,7 +293,7 @@ export function ProjectsCarousel({
                       </span>
                       <span>
                         {project.activity
-                          ? `${project.activitySource === "commit" ? "Committed" : "Pushed"} ${new Date(project.activity).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric", timeZone: "UTC" })}`
+                          ? `${project.activitySource === "commit" ? "Committed" : "Pushed"} ${formatProjectDate(project.activity)}`
                           : "Date unavailable"}
                       </span>
                       <a

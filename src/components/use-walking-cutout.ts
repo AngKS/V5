@@ -16,7 +16,9 @@ export function useWalkingCutout(
     if (!media || !surface) return;
     const gl = surface.getContext("webgl", {
       alpha: true,
-      premultipliedAlpha: false,
+      premultipliedAlpha: true,
+      depth: false,
+      stencil: false,
       preserveDrawingBuffer: true,
       antialias: false,
     });
@@ -71,7 +73,9 @@ export function useWalkingCutout(
         void main() {
           vec3 colour = texture2D(frame, vec2(uv.x * 0.5, uv.y)).rgb;
           float matte = texture2D(frame, vec2(0.5 + uv.x * 0.5, uv.y)).r;
-          gl_FragColor = vec4(colour, smoothstep(0.04, 0.96, matte));
+          float alpha = smoothstep(0.04, 0.96, matte);
+          // Match the browser compositor and remove RGB from transparent pixels.
+          gl_FragColor = vec4(colour * alpha, alpha);
         }
       `,
         ),
@@ -105,37 +109,43 @@ export function useWalkingCutout(
     let textureHeight = 0;
     let firstFrame = true;
     const draw = () => {
-      if (media.readyState < 2 || gl.isContextLost()) return;
-      if (
-        textureWidth !== media.videoWidth ||
-        textureHeight !== media.videoHeight
-      ) {
-        textureWidth = media.videoWidth;
-        textureHeight = media.videoHeight;
-        surface.width = textureWidth / 2;
-        surface.height = textureHeight;
-        gl.viewport(0, 0, surface.width, surface.height);
-        gl.texImage2D(
-          gl.TEXTURE_2D,
-          0,
-          gl.RGBA,
-          gl.RGBA,
-          gl.UNSIGNED_BYTE,
-          media,
-        );
-      } else {
-        // Reuse the GPU allocation as decoded frames arrive.
-        gl.texSubImage2D(
-          gl.TEXTURE_2D,
-          0,
-          0,
-          0,
-          gl.RGBA,
-          gl.UNSIGNED_BYTE,
-          media,
-        );
+      if (media.readyState < 2 || media.seeking || gl.isContextLost()) return;
+      try {
+        if (
+          textureWidth !== media.videoWidth ||
+          textureHeight !== media.videoHeight
+        ) {
+          textureWidth = media.videoWidth;
+          textureHeight = media.videoHeight;
+          surface.width = textureWidth / 2;
+          surface.height = textureHeight;
+          gl.viewport(0, 0, surface.width, surface.height);
+          gl.texImage2D(
+            gl.TEXTURE_2D,
+            0,
+            gl.RGBA,
+            gl.RGBA,
+            gl.UNSIGNED_BYTE,
+            media,
+          );
+        } else {
+          // Reuse the GPU allocation as decoded frames arrive.
+          gl.texSubImage2D(
+            gl.TEXTURE_2D,
+            0,
+            0,
+            0,
+            gl.RGBA,
+            gl.UNSIGNED_BYTE,
+            media,
+          );
+        }
+        gl.drawArrays(gl.TRIANGLES, 0, 6);
+      } catch {
+        setPainted(false);
+        setUnavailable(true);
+        return;
       }
-      gl.drawArrays(gl.TRIANGLES, 0, 6);
       if (firstFrame) {
         firstFrame = false;
         setPainted(true);
