@@ -12,12 +12,17 @@ export function Header() {
   ];
   return (
     <header className="header">
-      <a className="wordmark" href="#home" aria-label="Kah Shin, home">
+      <a
+        className="wordmark"
+        data-cyber="ANGKS"
+        href="#home"
+        aria-label="Kah Shin, home"
+      >
         ANGKS<span>✳</span>
       </a>
       <nav className="desktop-nav" aria-label="Main navigation">
         {links.map(([label, id]) => (
-          <a key={id} href={`#${id}`}>
+          <a key={id} href={`#${id}`} data-cyber={label}>
             {label}
           </a>
         ))}

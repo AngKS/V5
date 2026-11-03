@@ -3,8 +3,7 @@ export const profile = {
   email: "hellokahshin@gmail.com",
   linkedin: "https://www.linkedin.com/in/kahshinang",
   github: "https://github.com/AngKS",
-  resume:
-    "https://drive.google.com/file/d/1FGJF03knWlGFdvS7HdlUm8NSfGoe7Ls2/view",
+  resume: "/files/resume.pdf",
 };
 export type Experience = {
   role: string;

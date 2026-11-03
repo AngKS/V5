@@ -4,6 +4,7 @@ import "@fontsource/barlow-condensed/700.css";
 import "@fontsource/dm-sans/400.css";
 import "@fontsource/dm-sans/500.css";
 import "./globals.css";
+import "@/components/discoveries.css";
 import { PandaIntro } from "@/components/panda-intro";
 import { MotionProvider } from "@/components/motion";
 export const metadata: Metadata = {

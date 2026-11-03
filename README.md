@@ -109,3 +109,39 @@ trackpad gestures, and mobile touch swipes navigate. Trackpad momentum advances
 only one page per gesture; vertical scrolling and pinch zoom are left alone.
 Cards remain visible during lazy loading, then transition in the navigation
 direction. Motion transitions honor reduced motion.
+
+## Hidden auxiliary terminal
+
+Keep scrolling at the very bottom of the footer to uncover the console. It takes 720 accumulated pixels of deliberate overscroll (individual wheel impulses are capped); partial pulls reset after 1.8 seconds. Mobile visitors can keep swiping upward. The subtle “END OF TRANSMISSION” button provides an equivalent keyboard/tap entrance. Escape, the close button or `exit` seals it. Reduced-motion users receive the boot text immediately.
+
+Commands: `ls`, `help`, `man`, `cat hello.txt`, `cat USER_MANUAL.md`, `cat resume.pdf`, `qn <question>`, `clear`, `exit`. The filesystem is virtual; the PDF command links to the configured Google Drive resume. No shell commands run. Command history lives only in the mounted terminal and clears on close.
+
+For Q&A, set `OPENAI_API_KEY` in `.env.local` and in Vercel's server environment, then restart/redeploy. Never use a `NEXT_PUBLIC_` key. `OPENAI_MODEL` defaults to `gpt-5-nano`, the cheapest available general text model checked on November 3, 2026 ($0.05 input / $0.40 output per million tokens). **It is deprecated and retires December 11, 2026**; select a supported model via `OPENAI_MODEL` before then. See [OpenAI pricing](https://developers.openai.com/api/docs/models/gpt-5-nano) and [deprecations](https://developers.openai.com/api/docs/deprecations). No silent fallback to a more expensive model is configured.
+
+The Vercel AI SDK streams answers using only the public facts in `src/content/terminal-knowledge.ts` and `src/content/profile.ts`. Add verified background details there. Questions are independent: no chat history is sent, no tools are enabled, and provider response storage is disabled (`store: false`; this does not change OpenAI's other data retention policies). Questions are capped at 600 characters, generation at 1,200 output tokens (including reasoning), with no automatic retries and a 25-second timeout. Local commands work without a key.
+
+The API rejects cross-origin browser requests and oversized bodies, and includes a 20-request/minute **per-instance** circuit breaker. This is not a durable, distributed spending cap: configure provider project budgets and a Vercel Firewall rate limit for `/api/terminal` before exposing a paid key to substantial public traffic. No questions or upstream errors are logged by this application. Missing keys and provider failures show friendly terminal messages.
+
+## Portfolio files in Vercel Blob
+
+Use a **public** Blob store connected to this Vercel project. These are visitor-facing documents. Set `BLOB_READ_WRITE_TOKEN` in `.env.local` for the owner upload script; it is never sent to the browser, and the site has no public upload endpoint.
+
+```sh
+npm run files:upload -- /absolute/path/resume.pdf
+# Later, deliberately replace the published files:
+npm run files:upload -- /absolute/path/resume.pdf --overwrite
+```
+
+This uploads `portfolio/resume.pdf`, `portfolio/USER_MANUAL.md`, and `portfolio/hello.txt`. Without a PDF argument, only the two text files upload. Text files are generated from the built-in terminal content. Set `PORTFOLIO_BLOB_URL` to the printed store origin in `.env.local` and Vercel, then restart/redeploy. Replacements may take up to five minutes to appear due to caching.
+
+All resume links now use `/files/resume.pdf`. Until Blob is configured, that route redirects to the existing Google Drive resume. Once configured and the PDF exists, it redirects directly to Blob to avoid proxying the PDF through a Function. The terminal reads text files through `/files/USER_MANUAL.md` and `/files/hello.txt`, with built-in fallbacks during storage outages. Only these three filenames are exposed. The boot sequence and `help` remain bundled so discovery works without a network request. Uploaded files are not automatically added to AI knowledge; verified Q&A facts remain curated separately.
+
+### Discovered visual mode
+
+Closing the terminal (including clicking/tapping its backdrop) unlocks a cyberpunk overlay for the current tab: neon damaged header lettering, circuit traces, and Matrix-style rain behind each section. “BREACH ACTIVE / RESTORE” returns to the original design and disappears. Reopen and leave the terminal to activate breach mode again. The choice lasts for the tab session. The section canvases load only after discovery, run at roughly 12 fps, and pause when their section is offscreen or the tab is hidden. Reduced-motion mode disables rain and letter fizz. Effects are visual only; no audio plays.
+
+Vercel project: `akss-projects/kahshin-portfolio-v5`, connected to `AngKS/V5`. Public Blob store: `kahshin-portfolio-files` in Singapore (`sin1`). The manual and hello file are uploaded; resume upload is pending. Upload it as `portfolio/resume.pdf`, or run the upload script with `--overwrite` to update all three files. The existing Google Drive link remains the fallback until the PDF exists.
+
+### Smaller discoveries
+
+The custom 404 says “Object not detected” with a searching bounding box. The comic worker appears in the route loading fallback and project loading states. The footer's “engine room” link opens this repository. Its discovery passport collects four stamps (terminal, breach, source, 404) under `v5:discovery-stamps:v1` in localStorage, validates stored IDs, and synchronizes updates across tabs. Storage-blocked browsers keep stamps only in memory. No stamp data is sent to the server. Animations respect reduced motion. The intro panda now draws in black.

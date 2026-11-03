@@ -1,4 +1,6 @@
 import Image from "next/image";
+import { Discoveries } from "@/components/discoveries";
+import { TerminalHatch } from "@/components/terminal-hatch";
 import { Header } from "@/components/header";
 import { ProjectsCarousel } from "@/components/projects-carousel";
 import { profile, experience } from "@/content/profile";
@@ -43,7 +45,7 @@ export default async function Home() {
             <div className="intro-copy">
               <p className="intro-greeting">Hey, I’m</p>
               <h1 id="hero-title">
-                KAH SHIN<span>.</span>
+                KAH SHIN<span className="glitch-dot">.</span>
               </h1>
               <p className="intro-statement">
                 Curious about intelligence.
@@ -80,7 +82,7 @@ export default async function Home() {
             <h2>
               A LITTLE
               <br />
-              CONTEXT<span className="accent">.</span>
+              CONTEXT<span className="accent glitch-dot">.</span>
             </h2>
             <div>
               <p className="editorial">
@@ -117,7 +119,7 @@ export default async function Home() {
               <h3>
                 EVERY CHAPTER
                 <br />
-                BUILDS ON THE LAST.
+                BUILDS ON THE LAST<span className="glitch-dot">.</span>
               </h3>
             </div>
             <div className="experience-content">
@@ -163,7 +165,9 @@ export default async function Home() {
               <h2>
                 WORK IN
                 <br />
-                <span className="outline">PROGRESS.</span>
+                <span className="outline">
+                  PROGRESS<span className="glitch-dot">.</span>
+                </span>
               </h2>
               <p>
                 Experiments that became projects.
@@ -190,7 +194,7 @@ export default async function Home() {
             <h2>
               THINKING
               <br />
-              OUT LOUD<span className="accent">.</span>
+              OUT LOUD<span className="accent glitch-dot">.</span>
             </h2>
             <div>
               {writing.articles.length ? (
@@ -244,7 +248,10 @@ export default async function Home() {
             <h2>
               LET’S MAKE
               <br />
-              SOMETHING <em>CLICK.</em>
+              SOMETHING{" "}
+              <em>
+                CLICK<span className="glitch-dot">.</span>
+              </em>
             </h2>
             <div className="contact-bottom">
               <p>
@@ -276,9 +283,11 @@ export default async function Home() {
               </nav>
               <span className="eyebrow">MADE OF CURIOSITY & CODE.</span>
             </footer>
+            <Discoveries />
           </div>
         </section>
       </main>
+      <TerminalHatch />
     </>
   );
 }

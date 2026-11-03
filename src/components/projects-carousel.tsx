@@ -1,5 +1,6 @@
 "use client";
 import "./projects-carousel.css";
+import { PanelLoader } from "./panel-loader";
 import { useCallback, useEffect, useRef, useState } from "react";
 import {
   AnimatePresence,
@@ -206,14 +207,8 @@ export function ProjectsCarousel() {
             </button>
           </div>
         ) : loading && !data ? (
-          <div className="repo-cards" aria-label="Loading projects">
-            {Array.from({ length: pageSize }, (_, index) => (
-              <div key={index} className="repo-skeleton" aria-hidden="true">
-                <span />
-                <span />
-                <span />
-              </div>
-            ))}
+          <div role="status">
+            <PanelLoader />
           </div>
         ) : data?.total === 0 ? (
           <div className="repo-message">No public projects to show yet.</div>
@@ -295,15 +290,21 @@ export function ProjectsCarousel() {
           <span>Previous</span>
         </button>
         <div className="repo-page-status">
-          <span role="status" aria-live="polite">
-            {loading
-              ? "Loading projects…"
-              : error
-                ? "Unable to load page"
-                : totalPages
-                  ? `Page ${page + 1} of ${totalPages}`
-                  : "No projects"}
-          </span>
+          <div role="status" aria-live="polite">
+            {loading ? (
+              data ? (
+                <PanelLoader compact />
+              ) : (
+                "Loading projects…"
+              )
+            ) : error ? (
+              "Unable to load page"
+            ) : totalPages ? (
+              `Page ${page + 1} of ${totalPages}`
+            ) : (
+              "No projects"
+            )}
+          </div>
         </div>
         <button
           onClick={() => go(page + 1)}

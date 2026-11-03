@@ -601,6 +601,7 @@ footer .eyebrow {
   text-align: center;
 }
 .panda-intro-art svg {
+  color: #191919;
   display: block;
   width: clamp(140px, 34vw, 260px);
   max-height: 55svh;

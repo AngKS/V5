@@ -1,0 +1,243 @@
+.discovery-desk {
+  border-top: 1px dashed currentColor;
+  margin-top: 28px;
+  padding: 20px 0 0;
+  font-size: 12px;
+}
+.engine-room {
+  display: inline-block;
+  font: 11px monospace;
+  opacity: 0.8;
+  letter-spacing: 0.06em;
+  padding: 8px 0;
+}
+.engine-room:hover {
+  opacity: 1;
+  text-decoration: underline;
+  text-underline-offset: 5px;
+}
+.discovery-passport {
+  margin-top: 12px;
+}
+.discovery-passport summary {
+  cursor: pointer;
+  width: fit-content;
+  padding: 8px 0;
+  font: 12px monospace;
+}
+.discovery-passport summary > span {
+  border: 1px solid;
+  padding: 3px 7px;
+  margin-left: 12px;
+}
+.discovery-passport > p {
+  margin: 14px 0;
+  line-height: 1.7;
+}
+.discovery-passport ul {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+  padding: 0;
+  list-style: none;
+  margin-block: 20px;
+}
+.stamp {
+  padding: 18px 10px;
+  border: 2px dashed currentColor;
+  text-align: center;
+  opacity: 0.55;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.stamp.found {
+  opacity: 1;
+  border-style: double;
+  border-width: 4px;
+  transform: rotate(-2deg);
+}
+.stamp.found:nth-child(even) {
+  transform: rotate(2deg);
+}
+.stamp-symbol {
+  font: bold 25px monospace;
+}
+.stamp strong {
+  font-size: 13px;
+}
+.stamp > span:last-child {
+  font-size: 11px;
+  line-height: 1.5;
+}
+.discovery-notice {
+  display: block;
+  min-height: 1.5em;
+  margin-top: 12px;
+  font: 11px monospace;
+}
+.panel-loader {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 14px;
+  min-height: 340px;
+  color: inherit;
+  font: 13px monospace;
+}
+.panel-loader svg {
+  width: 220px;
+  max-width: 70vw;
+  overflow: visible;
+}
+.comic-worker {
+  animation: worker-step 0.65s ease-in-out infinite alternate;
+  transform-origin: center bottom;
+}
+.worker-road {
+  animation: worker-road 0.65s linear infinite;
+}
+.panel-loader.compact {
+  flex-direction: row;
+  min-height: 0;
+  gap: 8px;
+  font-size: 11px;
+}
+.panel-loader.compact svg {
+  width: 58px;
+}
+.page-loader {
+  min-height: 80svh;
+  display: grid;
+  place-items: center;
+}
+.not-detected {
+  padding-block: 40px 60px;
+  max-width: 1100px;
+}
+.not-detected h1 {
+  font-size: clamp(52px, 9vw, 110px);
+  line-height: 0.95;
+}
+.not-detected > p {
+  margin: 24px 0;
+  line-height: 1.8;
+}
+.not-detected .section-label {
+  margin: 25px 0;
+}
+.detector-field {
+  position: relative;
+  height: clamp(200px, 30vw, 330px);
+  margin-top: 40px;
+  overflow: hidden;
+  border: 1px solid var(--ink);
+  background: radial-gradient(var(--ink) 0.7px, transparent 0.7px) 0 0/12px 12px;
+}
+.detector-field > span {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  color: var(--paper);
+  -webkit-text-stroke: 1px var(--ink);
+  font:
+    800 clamp(100px, 18vw, 220px)/1 "Barlow Condensed",
+    sans-serif;
+}
+.detector-field small {
+  position: absolute;
+  bottom: 12px;
+  left: 14px;
+  font: 9px monospace;
+  background: var(--paper);
+  padding: 5px;
+}
+.searching-box {
+  position: absolute;
+  left: 12%;
+  top: 18%;
+  width: 34%;
+  height: 60%;
+  animation: object-search 5s ease-in-out infinite;
+  color: var(--accent);
+}
+.searching-box i {
+  position: absolute;
+  width: 22px;
+  height: 22px;
+  border: 3px solid;
+}
+.searching-box i:nth-child(1) {
+  top: 0;
+  left: 0;
+  border-right: 0;
+  border-bottom: 0;
+}
+.searching-box i:nth-child(2) {
+  top: 0;
+  right: 0;
+  border-left: 0;
+  border-bottom: 0;
+}
+.searching-box i:nth-child(3) {
+  bottom: 0;
+  left: 0;
+  border-right: 0;
+  border-top: 0;
+}
+.searching-box i:nth-child(4) {
+  bottom: 0;
+  right: 0;
+  border-left: 0;
+  border-top: 0;
+}
+.searching-box b {
+  position: absolute;
+  top: -20px;
+  left: 0;
+  background: var(--paper);
+  font: 10px monospace;
+  padding: 3px;
+}
+@keyframes object-search {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  35% {
+    transform: translate(100%, 12%) scale(0.8);
+  }
+  70% {
+    transform: translate(55%, -10%) scale(1.15);
+  }
+}
+@keyframes worker-step {
+  from {
+    transform: translateY(0) rotate(-2deg);
+  }
+  to {
+    transform: translateY(-5px) rotate(2deg);
+  }
+}
+@keyframes worker-road {
+  to {
+    stroke-dashoffset: -18;
+  }
+}
+@media (max-width: 700px) {
+  .discovery-passport ul {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .panel-loader.compact > span {
+    max-width: 100px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .searching-box,
+  .comic-worker,
+  .worker-road {
+    animation: none;
+  }
+}
