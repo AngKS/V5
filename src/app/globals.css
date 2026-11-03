@@ -952,6 +952,9 @@ footer .eyebrow {
 .intro-hero {
   position: relative;
   isolation: isolate;
+  /* Fill the viewport while keeping content aligned with the capped wrap. */
+  max-width: none;
+  padding-inline: max(6%, calc((100% - 1440px) / 2 + 6%));
 }
 .intro-hero::before {
   content: "";

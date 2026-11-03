@@ -2,7 +2,7 @@
 
 A comic-inspired personal portfolio with a second, cyberpunk side hiding beneath the page. Built with Next.js, TypeScript, Motion, and Vercel.
 
-**[Visit the live portfolio](https://kahshin-portfolio-v5.vercel.app)** · [Report an issue](https://github.com/AngKS/V5/issues)
+**[Visit the live portfolio](https://thatasiandude.com)** · [Report an issue](https://github.com/AngKS/V5/issues)
 
 ## Screenshots
 
