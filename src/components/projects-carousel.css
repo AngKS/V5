@@ -270,3 +270,49 @@
     transform: none;
   }
 }
+
+/* Offset translucent card edges hint at the mobile swipe directions. */
+@media (max-width: 700px) {
+  .repo-window {
+    position: relative;
+    isolation: isolate;
+  }
+  .repo-window[data-peek-previous="true"],
+  .repo-window[data-peek-next="true"] {
+    padding-inline: 20px;
+  }
+  .repo-window::before,
+  .repo-window::after {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    top: 18px;
+    bottom: 18px;
+    width: calc(100% - 40px);
+    background: var(--repo-paper);
+    border: 1px solid var(--repo-on-dark);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 220ms ease;
+  }
+  .repo-window::before {
+    left: 0;
+  }
+  .repo-window::after {
+    right: 0;
+  }
+  .repo-window[data-peek-previous="true"]::before,
+  .repo-window[data-peek-next="true"]::after {
+    opacity: 0.28;
+  }
+  .cyber-breach .repo-window::before,
+  .cyber-breach .repo-window::after {
+    background: var(--accent);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .repo-window::before,
+  .repo-window::after {
+    transition: none;
+  }
+}

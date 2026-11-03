@@ -3,6 +3,7 @@ import { Icon } from "@/components/icon";
 
 import { useEffect, useState, useSyncExternalStore } from "react";
 import "./cyber-bleed.css";
+import "./panda-mobile.css";
 import { createPortal, preload } from "react-dom";
 import Image from "next/image";
 import { CyberPanda } from "./cyber-panda";

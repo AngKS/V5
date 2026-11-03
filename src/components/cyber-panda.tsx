@@ -94,6 +94,84 @@ export function CyberPanda({ variant = "vr" }: { variant?: "vr" | "laptop" }) {
             );
           })}
         </g>
+        <g className="panda-stencil-fills">
+          {variant === "laptop" ? (
+            <>
+              <path
+                className="panda-fill-dark"
+                d="M105 110Q67 79 89 49q27-31 59 5ZM302 72q39-36 66-6 24 29-4 57Z"
+              />
+              <path
+                className="panda-fill-hood"
+                d="M95 220q-32-3-34 28l-7 26 16 23q-27 70-16 124 8 35 70 28 47 42 135 22l58-176Z"
+              />
+              <path
+                className="panda-fill-face"
+                d="M91 156Q87 79 155 58q93-31 161 22 57 43 48 120-6 69-67 94-82 30-152-16-56-37-54-122Z"
+              />
+              <ellipse
+                className="panda-fill-dark"
+                cx="167"
+                cy="164"
+                rx="31"
+                ry="40"
+                transform="rotate(24 167 164)"
+              />
+              <ellipse
+                className="panda-fill-dark"
+                cx="276"
+                cy="178"
+                rx="31"
+                ry="40"
+                transform="rotate(-22 276 178)"
+              />
+              <circle className="panda-fill-face" cx="174" cy="158" r="7" />
+              <circle className="panda-fill-face" cx="277" cy="172" r="7" />
+              <path
+                className="panda-fill-dark"
+                d="M208 190q15-9 27 2-5 17-16 13-9-4-11-15Z"
+              />
+              <path
+                className="panda-fill-device"
+                d="m258 293 100 1q10 0 7 12l-26 151q-1 10-12 10h-96Z"
+              />
+              <path
+                className="panda-fill-dark"
+                d="M222 402q24-15 45 5 25 27 5 48-13 15-50 16-19-35 0-69Z"
+              />
+            </>
+          ) : (
+            <>
+              <path
+                className="panda-fill-dark"
+                d="M80 126Q67 78 110 67L144 78ZM323 87q51-7 49 44l-16 27Z"
+              />
+              <path
+                className="panda-fill-hood"
+                d="M76 151Q67 72 146 43q109-42 184 37 71 79 34 185l-29 45q38 8 46 47 23 62-12 96l-22 16 3 15q-131 46-259 3l6-68q-45-12-34-78 9-57 51-77Z"
+              />
+              <path
+                className="panda-fill-face"
+                d="M86 211q-6 70 63 103 74 31 137-2 62-33 61-101l-9-50q-2-14-21-29-51-54-149-34-74 11-82 113Z"
+              />
+              <path
+                className="panda-fill-device"
+                d="M73 137q100-18 204 7 34 8 36 52 1 42-29 51-109 21-211-3-35-9-33-53 1-43 33-54Z"
+              />
+              {[112, 173, 234].map((x) => (
+                <rect
+                  className="panda-fill-dark"
+                  key={x}
+                  x={x}
+                  y="174"
+                  width="20"
+                  height="39"
+                  rx="10"
+                />
+              ))}
+            </>
+          )}
+        </g>
         <g stroke={`url(#${id}-ink)`} strokeWidth="5">
           <use href={`#${id}-stencil`} className="panda-stencil" />
           <g className="panda-paint-drips">

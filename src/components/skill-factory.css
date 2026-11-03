@@ -426,3 +426,9 @@
     transition: none;
   }
 }
+
+/* Hide immediately during the mode change, before React removes the feature. */
+.cyber-breach .page-peel,
+.cyber-breach .factory-dialog {
+  display: none;
+}

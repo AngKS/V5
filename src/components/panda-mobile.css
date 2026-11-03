@@ -1,0 +1,84 @@
+/* Hallmark · component: mobile panda stencils · theme: existing cyberpunk brand · redesign: polish */
+/* Critique: keep recognizable filled silhouettes; give each heading its own small corner print, clear of body copy. */
+/* User-requested panda illustration and neon effects retained. Desktop artwork unchanged. */
+/* waive 39b: existing page-peel is a corner interaction, not a standard marketing control; outside this tattoo change. */
+/* waive 75: existing site captions and CTA sizing are outside this tattoo-only scope. */
+/* answered F19: retain the existing site type system; these stencils introduce no text or font weights. */
+:root {
+  --panda-stencil-face: #a6d9d8;
+  --panda-stencil-dark: #0b2530;
+  --panda-stencil-hood: #123c4c;
+  --panda-stencil-device: #447c87;
+}
+.panda-stencil-fills {
+  display: none;
+}
+@media (max-width: 700px) {
+  .cyber-breach .cyber-panda {
+    inset: -12px 0 auto auto;
+    width: 100px;
+    height: 126px;
+    opacity: 0.8;
+    animation: none;
+    display: block;
+  }
+  .cyber-breach .cyber-panda > svg {
+    filter: none;
+    overflow: visible;
+  }
+  .panda-stencil-fills {
+    display: block;
+  }
+  .panda-fill-face {
+    fill: var(--panda-stencil-face);
+  }
+  .panda-fill-dark {
+    fill: var(--panda-stencil-dark);
+  }
+  .panda-fill-hood {
+    fill: var(--panda-stencil-hood);
+  }
+  .panda-fill-device {
+    fill: var(--panda-stencil-device);
+  }
+  .panda-stencil {
+    stroke-width: 2.5px;
+  }
+  .panda-paint-drips {
+    animation: none;
+    transform: scaleY(0.35);
+    opacity: 0.7;
+  }
+  .panda-spray {
+    opacity: 0.45;
+  }
+  .panda-glitch-channel {
+    animation-duration: 12s;
+  }
+  .cyber-breach .intro-greeting,
+  .cyber-breach .intro-copy h1 {
+    max-width: calc(100% - 100px);
+    text-wrap: balance;
+  }
+  .cyber-breach .intro-copy h1 {
+    min-height: 56px;
+  }
+  .cyber-breach .about-title {
+    min-height: 112px;
+    align-items: center;
+  }
+  .cyber-breach .about-title h2 {
+    max-width: calc(100% - 110px);
+    text-wrap: balance;
+  }
+  .cyber-breach .about-title .cyber-panda-laptop {
+    inset: -8px 0 auto auto;
+    width: 110px;
+    height: 140px;
+  }
+}
+@media (max-width: 700px) and (prefers-reduced-motion: reduce) {
+  .panda-glitch-channel {
+    animation: none;
+  }
+}

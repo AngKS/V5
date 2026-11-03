@@ -9,18 +9,35 @@ const SkillFactory = dynamic(() => import("./skill-factory"));
 export function PagePeel() {
   const trigger = useRef<HTMLButtonElement>(null);
   const [open, setOpen] = useState(false);
+  const [breached, setBreached] = useState(false);
+  useEffect(() => {
+    const root = document.documentElement;
+    const syncMode = () => {
+      const active = root.classList.contains("cyber-breach");
+      setBreached(active);
+      if (active) {
+        wasOpen.current = false;
+        setOpen(false);
+      }
+    };
+    syncMode();
+    const observer = new MutationObserver(syncMode);
+    observer.observe(root, { attributes: true, attributeFilter: ["class"] });
+    return () => observer.disconnect();
+  }, []);
   const wasOpen = useRef(false);
   useEffect(() => {
     if (open) {
       wasOpen.current = true;
       return;
     }
-    if (!wasOpen.current) return;
+    if (breached || !wasOpen.current) return;
     const frame = requestAnimationFrame(() =>
       trigger.current?.focus({ preventScroll: true }),
     );
     return () => cancelAnimationFrame(frame);
-  }, [open]);
+  }, [open, breached]);
+  if (breached) return null;
   return (
     <>
       <button
@@ -30,6 +47,8 @@ export function PagePeel() {
         aria-expanded={open}
         title="Under the surface: explore my skills factory"
         onClick={() => {
+          if (document.documentElement.classList.contains("cyber-breach"))
+            return;
           setOpen(true);
           trigger.current?.closest("section")?.scrollIntoView({
             block: "start",

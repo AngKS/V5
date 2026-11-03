@@ -175,6 +175,12 @@ export function ProjectsCarousel() {
       <div
         ref={viewport}
         className="repo-window"
+        data-peek-previous={!error && !!data?.items.length && data.page > 0}
+        data-peek-next={
+          !error &&
+          !!data?.items.length &&
+          (data.page + 1) * data.pageSize < data.total
+        }
         aria-busy={loading}
         onTouchStart={(event) => {
           if (event.touches.length !== 1) {

@@ -1,4 +1,5 @@
 "use client";
+import { TerminalText } from "./terminal-text";
 import { Icon } from "@/components/icon";
 
 import { useEffect, useRef, useState, type FormEvent } from "react";
@@ -24,6 +25,7 @@ export default function SecretTerminal({
   const follow = useRef(true);
   const history = useRef<string[]>([]);
   const historyIndex = useRef(0);
+  const [mobile, setMobile] = useState(false);
   const [settled, setSettled] = useState(false);
   const [viewportHeight, setViewportHeight] = useState(() =>
     typeof window === "undefined"
@@ -55,9 +57,11 @@ export default function SecretTerminal({
     const resize = () => {
       const height = viewport?.height ?? window.innerHeight;
       setViewportHeight(height);
+      const isMobile = window.matchMedia("(max-width: 700px)").matches;
+      setMobile(isMobile);
       dialog.current?.style.setProperty(
         "--terminal-height",
-        `${height * 0.88}px`,
+        `${isMobile ? height : height * 0.88}px`,
       );
       dialog.current?.style.setProperty(
         "--terminal-center",
@@ -65,9 +69,11 @@ export default function SecretTerminal({
       );
     };
     resize();
+    window.addEventListener("resize", resize);
     viewport?.addEventListener("resize", resize);
     viewport?.addEventListener("scroll", resize);
     return () => {
+      window.removeEventListener("resize", resize);
       viewport?.removeEventListener("resize", resize);
       viewport?.removeEventListener("scroll", resize);
     };
@@ -202,7 +208,9 @@ export default function SecretTerminal({
     }
   }
 
-  const shellHeight = Math.min(760, viewportHeight * 0.88);
+  const shellHeight = mobile
+    ? viewportHeight
+    : Math.min(760, viewportHeight * 0.88);
   const hiddenOffset = viewportHeight / 2 + shellHeight / 2 + 18;
   const resistedPull =
     (Math.min(240, viewportHeight * 0.29) * (1 - Math.exp(-3 * pull))) /
@@ -293,7 +301,7 @@ export default function SecretTerminal({
           )}
           {isOpen && showBoot && (
             <pre className="terminal-boot">
-              {BOOT.slice(0, bootLength)}
+              <TerminalText text={BOOT.slice(0, bootLength)} />
               {booting && (
                 <span className="terminal-cursor" aria-hidden="true">
                   ▊
@@ -302,23 +310,37 @@ export default function SecretTerminal({
             </pre>
           )}
           {entries.map((entry, i) => (
-            <div className="terminal-entry" key={i}>
+            <section
+              className="terminal-entry"
+              key={i}
+              aria-label={`Command ${i + 1}: ${entry.command}`}
+              data-channel={/^qn\s/i.test(entry.command) ? "uplink" : "local"}
+            >
               <p className="terminal-echo">
                 <span aria-hidden="true">visitor@angks:~$ </span>
-                {entry.command}
+                <TerminalText text={entry.command} />
               </p>
-              <pre>
-                {entry.text ||
-                  (busy && i === entries.length - 1
-                    ? "Establishing uplink ..."
-                    : "")}
-              </pre>
-              {entry.href && (
-                <a href={entry.href} target="_blank" rel="noreferrer">
-                  Open resume.pdf <Icon name="arrow-up-right" />
-                </a>
-              )}
-            </div>
+              <div className="terminal-response">
+                <span className="terminal-response-label">
+                  {/^qn\s/i.test(entry.command) ? "AI uplink" : "Local output"}
+                </span>
+                <pre>
+                  <TerminalText
+                    text={
+                      entry.text ||
+                      (busy && i === entries.length - 1
+                        ? "[Establishing uplink ...]"
+                        : "")
+                    }
+                  />
+                </pre>
+                {entry.href && (
+                  <a href={entry.href} target="_blank" rel="noreferrer">
+                    Open resume.pdf <Icon name="arrow-up-right" />
+                  </a>
+                )}
+              </div>
+            </section>
           ))}
         </div>
         <div className="terminal-controls">
