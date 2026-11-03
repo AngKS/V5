@@ -1,3 +1,5 @@
+import { PortfolioWebMCP } from "@/components/portfolio-webmcp";
+import type { Metadata } from "next";
 import { PagePeel } from "@/components/page-peel";
 import { InterestsMarquee } from "@/components/interests-marquee";
 import { Icon } from "@/components/icon";
@@ -9,10 +11,13 @@ import { ProjectsCarousel } from "@/components/projects-carousel";
 import { profile, experience } from "@/content/profile";
 import { getWriting } from "@/lib/content";
 export const revalidate = 3600;
+export const metadata: Metadata = { alternates: { canonical: "/" } };
+
 export default async function Home() {
   const writing = await getWriting();
   return (
     <>
+      <PortfolioWebMCP />
       <a className="skip-link" href="#main">
         Skip to content
       </a>
@@ -132,7 +137,7 @@ export default async function Home() {
                 experience.map((item) => (
                   <article
                     className="role"
-                    key={`${item.company}-${item.role}`}
+                    key={`${item.company}-${item.role}-${item.dates}`}
                   >
                     <span className="eyebrow">
                       {item.dates}

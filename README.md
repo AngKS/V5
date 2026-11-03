@@ -138,6 +138,29 @@ The `/files/resume.pdf` route falls back to the Google Drive resume when the Blo
 
 The repository’s `main` branch is connected to the Vercel project `kahshin-portfolio-v5`; pushes trigger production deployments. For your own fork, import it into Vercel, select the Next.js preset, and configure environment variables in your own project. No custom `vercel.json` is required.
 
+## AI agent access
+
+The homepage registers six read-only tools when the experimental
+`document.modelContext` WebMCP API is available:
+
+- `get_portfolio_profile`: owner-supplied biography and interests.
+- `get_portfolio_experience`: career entries, LinkedIn source and review date.
+- `get_portfolio_education`: study programmes, dates and activities; future completion is explicitly marked.
+- `get_portfolio_contact`: public contact, resume, and source links.
+- `get_portfolio_writing`: public article metadata or availability status.
+- `list_portfolio_projects`: paginated public GitHub repositories (`page`, zero-based).
+
+No tools call OpenAI, send messages, navigate the page, mutate data, or access
+visitor storage. External repository/feed content is marked untrusted. Tools
+register only on the homepage, clean up via AbortSignal, and are a no-op in
+unsupported browsers. Native availability depends on browser support and policy.
+
+For agents without WebMCP, `/llms.txt` links to `/api/agent`, its public JSON
+resources, and the existing project API. These are HTTP resources, not a remote
+MCP server. `src/content/agent-info.ts` holds the public facts; it never exports
+internal terminal instructions. LinkedIn career and education are a manually reviewed snapshot (2026-11-03), not an automatic sync. Missing details and resume text are explicitly
+marked as unavailable. Optional feeds retain the site's one-hour cache behavior.
+
 ## Contributing
 
 Issues and pull requests are welcome. For changes, run `npm run typecheck`, `npm test`, and `npm run build`. Check responsive layouts, keyboard navigation, and reduced-motion behavior when changing interactive features. Keep credentials and private information out of contributions.

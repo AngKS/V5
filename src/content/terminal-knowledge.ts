@@ -1,3 +1,4 @@
+import { agentResources } from "./agent-info";
 import { experience, featuredProjects, profile } from "./profile";
 
 // Public, owner-provided facts only. Add verified biographical details here.
@@ -9,8 +10,7 @@ For unrelated requests, briefly redirect to his work, interests or contact detai
 PUBLIC FACTS:
 ${JSON.stringify({
   ...profile,
-  biography:
-    "Kah Shin is an AI/ML enthusiast with a long background in AI, especially computer vision and explainable AI, and a longstanding passion for infrastructure engineering. He is interested in what models see, how they arrive at predictions, and how to make their behaviour easier to understand. He enjoys building systems and services that bring ideas to life.",
+  biography: agentResources.profile.biography,
   projects: featuredProjects.map(({ repo, description, category }) => ({
     repo,
     description,
@@ -18,6 +18,7 @@ ${JSON.stringify({
     url: `${profile.github}/${repo}`,
   })),
   experience,
+  education: agentResources.education,
   notes:
-    "Employment details have not been supplied. Resume contents have not been supplied; only the public link is known. Medium profile is being set up.",
+    "Career and education are self-reported LinkedIn facts reviewed on 2026-11-03, not live-synced. The SUTD degree is in progress, with expected completion in May 2029. Resume contents have not been supplied; only the public link is known. Medium profile is being set up.",
 })}`;
