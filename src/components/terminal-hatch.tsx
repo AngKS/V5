@@ -46,7 +46,9 @@ export function TerminalHatch() {
         requestAnimationFrame(() => {
           window.scrollTo({ top: 0, left: 0, behavior: "instant" });
           document
-            .querySelector<HTMLElement>(".header .wordmark")
+            .querySelector<HTMLElement>(
+              ".header .wordmark, .not-detected .wordmark",
+            )
             ?.focus({ preventScroll: true });
         });
         return;
@@ -84,7 +86,9 @@ export function TerminalHatch() {
     requestAnimationFrame(() => {
       window.scrollTo({ top: 0, left: 0, behavior: "instant" });
       document
-        .querySelector<HTMLElement>(".header .wordmark")
+        .querySelector<HTMLElement>(
+          ".header .wordmark, .not-detected .wordmark",
+        )
         ?.focus({ preventScroll: true });
     });
   }, []);

@@ -62,9 +62,9 @@ export default async function Home() {
               </div>
               <figcaption>
                 <span>FIG. 01 — THE HUMAN BEHIND THE CODE</span>
-                <span aria-hidden="true">
+                <a href="#about" aria-label="Meet the human behind the code">
                   <Icon name="arrow-up-right" />
-                </span>
+                </a>
               </figcaption>
             </figure>
             <div className="intro-copy">

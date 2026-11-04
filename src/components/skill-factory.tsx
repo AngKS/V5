@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { SkillMachine } from "./skill-machine";
 import { useWalkingCutout } from "./use-walking-cutout";
 import { PageCurl } from "./page-curl";
@@ -9,11 +9,19 @@ import {
   motion,
   useMotionValueEvent,
   useMotionValue,
-  useReducedMotion,
   useScroll,
   useTransform,
   type MotionValue,
 } from "motion/react";
+
+const reducedMotionQuery = "(prefers-reduced-motion: reduce)";
+function subscribeReducedMotion(listener: () => void) {
+  const query = window.matchMedia(reducedMotionQuery);
+  query.addEventListener("change", listener);
+  return () => query.removeEventListener("change", listener);
+}
+const readReducedMotion = () => window.matchMedia(reducedMotionQuery).matches;
+const serverReducedMotion = () => true;
 
 const interests = [
   {
@@ -124,6 +132,65 @@ function Portrait({
   );
 }
 
+/** Two repeated columns share a tilted plane; only their translation animates. */
+function MobileCardMarquee({ progress }: { progress: MotionValue<number> }) {
+  const region = useRef<HTMLDivElement>(null);
+  const [paused, setPaused] = useState(false);
+  const [active, setActive] = useState(false);
+  useEffect(() => {
+    let inView = false;
+    const sync = () => setActive(inView && !document.hidden);
+    const observer = new IntersectionObserver(([entry]) => {
+      inView = entry.isIntersecting;
+      sync();
+    });
+    if (region.current) observer.observe(region.current);
+    document.addEventListener("visibilitychange", sync);
+    return () => {
+      observer.disconnect();
+      document.removeEventListener("visibilitychange", sync);
+    };
+  }, []);
+  return (
+    <div ref={region} className="walk-marquee" data-paused={paused || !active}>
+      <div className="walk-marquee-window">
+        <div className="walk-marquee-plane">
+          {[0, 1].map((column) => (
+            <div className="walk-marquee-track" key={column}>
+              {[0, 1].map((copy) => (
+                <div
+                  className="walk-marquee-group"
+                  key={copy}
+                  aria-hidden={copy === 1 ? true : undefined}
+                >
+                  {[column, column + 2, column + 4].map((index) => (
+                    <Portrait
+                      key={index}
+                      index={index}
+                      progress={progress}
+                      reduced
+                      mobile
+                    />
+                  ))}
+                </div>
+              ))}
+            </div>
+          ))}
+        </div>
+      </div>
+      <button
+        type="button"
+        className="walk-marquee-toggle"
+        aria-label={paused ? "Resume moving cards" : "Pause moving cards"}
+        aria-pressed={paused}
+        onClick={() => setPaused((value) => !value)}
+      >
+        <span>{paused ? "TAP TO RESUME" : "TAP TO PAUSE"}</span>
+      </button>
+    </div>
+  );
+}
+
 // The same comic imagery used by the breach-to-normal sequence, clipped into
 // the name. Scroll drives the cuts, so reversing never starts a timed takeover.
 const finaleArtwork = [
@@ -182,13 +249,19 @@ export default function SkillFactory({ onClose }: { onClose: () => void }) {
   const returnTop = useRef(0);
   const [closing, setClosing] = useState(false);
   const sceneProgress = useMotionValue(0);
-  const reduced = useReducedMotion();
+  const reduced = useSyncExternalStore(
+    subscribeReducedMotion,
+    readReducedMotion,
+    serverReducedMotion,
+  );
   const [ready, setReady] = useState(false);
   const [failed, setFailed] = useState(false);
   const [complete, setComplete] = useState(false);
   // Resolve the viewport before choosing a source so phones never fetch both.
   const [mobile, setMobile] = useState<boolean | null>(null);
-  const staticMode = !!reduced || failed || unavailable;
+  // Mobile uses an autonomous marquee instead of the pinned video journey.
+  const mobileMarquee = mobile === true && reduced === false;
+  const staticMode = mobile !== false || !!reduced || failed || unavailable;
   const { scrollYProgress } = useScroll({
     target: track,
     offset: ["start start", "end end"],
@@ -240,7 +313,7 @@ export default function SkillFactory({ onClose }: { onClose: () => void }) {
   }, []);
 
   useEffect(() => {
-    if (ready || reduced) return;
+    if (ready || staticMode) return;
     const media = video.current;
     const loaded = () => {
       if (media && media.readyState >= 2) {
@@ -260,7 +333,7 @@ export default function SkillFactory({ onClose }: { onClose: () => void }) {
       media?.removeEventListener("loadeddata", loaded);
       media?.removeEventListener("canplay", loaded);
     };
-  }, [ready, reduced]);
+  }, [ready, staticMode]);
 
   useEffect(() => {
     if (closing)
@@ -281,7 +354,7 @@ export default function SkillFactory({ onClose }: { onClose: () => void }) {
   return (
     <div
       ref={track}
-      className={`factory-dialog${staticMode ? " walk-static" : ""}${closing ? " walk-closing" : ""}`}
+      className={`factory-dialog${staticMode ? " walk-static" : ""}${mobileMarquee ? " walk-mobile-marquee" : ""}${closing ? " walk-closing" : ""}`}
       role="region"
       aria-label="A walk through my interests"
       onKeyDown={(event) => {
@@ -396,17 +469,21 @@ export default function SkillFactory({ onClose }: { onClose: () => void }) {
               </h2>
             </div>
           </header>
-          <div className="walk-gallery">
-            {interests.map((interest, index) => (
-              <Portrait
-                key={interest.kind}
-                index={index}
-                progress={sceneProgress}
-                reduced={staticMode}
-                mobile={!!mobile}
-              />
-            ))}
-          </div>
+          {mobileMarquee ? (
+            <MobileCardMarquee progress={sceneProgress} />
+          ) : (
+            <div className="walk-gallery">
+              {interests.map((interest, index) => (
+                <Portrait
+                  key={interest.kind}
+                  index={index}
+                  progress={sceneProgress}
+                  reduced={staticMode}
+                  mobile={!!mobile}
+                />
+              ))}
+            </div>
+          )}
           <div
             className="walk-instruction"
             data-complete={complete || staticMode}

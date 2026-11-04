@@ -134,6 +134,7 @@ h1 {
   color: var(--paper);
 }
 .ticker {
+  position: relative;
   display: flex;
   align-items: center;
   overflow: hidden;
@@ -146,6 +147,13 @@ h1 {
   color: var(--paper);
 }
 .ticker-window {
+  mask-image: linear-gradient(
+    to right,
+    transparent,
+    black 24px,
+    black calc(100% - 24px),
+    transparent
+  );
   overflow: hidden;
   flex: 1;
   min-width: 0;
@@ -175,20 +183,18 @@ h1 {
   animation-play-state: paused;
 }
 .ticker-toggle {
-  display: grid;
-  place-items: center;
-  flex-shrink: 0;
-  width: 44px;
-  height: 32px;
-  margin-inline: 8px;
-  border: 1px solid currentColor;
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
   background: transparent;
-  color: inherit;
   cursor: pointer;
+  touch-action: pan-y;
 }
 .ticker-toggle:focus-visible {
   outline: 2px solid currentColor;
-  outline-offset: 3px;
+  outline-offset: -5px;
 }
 @keyframes interests-scroll {
   to {
@@ -858,7 +864,11 @@ footer .eyebrow {
   font-size: 9px;
   letter-spacing: 1px;
 }
-.portrait-panel figcaption > span:last-child {
+.portrait-panel figcaption > a {
+  display: grid;
+  place-items: center;
+  min-width: 44px;
+  min-height: 44px;
   font-size: 20px;
 }
 @media (max-width: 1000px) {

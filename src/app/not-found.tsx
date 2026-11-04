@@ -1,5 +1,6 @@
 import { Icon } from "@/components/icon";
 import Link from "next/link";
+import { TerminalHatch } from "@/components/terminal-hatch";
 import { DiscoveryAward, Discoveries } from "@/components/discoveries";
 export default function NotFound() {
   return (
@@ -37,6 +38,7 @@ export default function NotFound() {
         BACK TO KNOWN TERRITORY <Icon name="arrow-up-right" />
       </Link>
       <Discoveries />
+      <TerminalHatch />
     </main>
   );
 }
