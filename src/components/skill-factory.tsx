@@ -132,61 +132,29 @@ function Portrait({
   );
 }
 
-/** Two repeated columns share a tilted plane; only their translation animates. */
-function MobileCardMarquee({ progress }: { progress: MotionValue<number> }) {
-  const region = useRef<HTMLDivElement>(null);
-  const [paused, setPaused] = useState(false);
-  const [active, setActive] = useState(false);
-  useEffect(() => {
-    let inView = false;
-    const sync = () => setActive(inView && !document.hidden);
-    const observer = new IntersectionObserver(([entry]) => {
-      inView = entry.isIntersecting;
-      sync();
-    });
-    if (region.current) observer.observe(region.current);
-    document.addEventListener("visibilitychange", sync);
-    return () => {
-      observer.disconnect();
-      document.removeEventListener("visibilitychange", sync);
-    };
-  }, []);
+/** A still, edge-to-edge poster wall for the reduced-motion scene. */
+function PosterBackdrop({ progress }: { progress: MotionValue<number> }) {
   return (
-    <div ref={region} className="walk-marquee" data-paused={paused || !active}>
-      <div className="walk-marquee-window">
-        <div className="walk-marquee-plane">
-          {[0, 1].map((column) => (
-            <div className="walk-marquee-track" key={column}>
-              {[0, 1].map((copy) => (
-                <div
-                  className="walk-marquee-group"
-                  key={copy}
-                  aria-hidden={copy === 1 ? true : undefined}
-                >
-                  {[column, column + 2, column + 4].map((index) => (
-                    <Portrait
-                      key={index}
-                      index={index}
-                      progress={progress}
-                      reduced
-                      mobile
-                    />
-                  ))}
-                </div>
-              ))}
-            </div>
-          ))}
-        </div>
+    <div className="walk-poster-backdrop">
+      <div className="walk-poster-plane">
+        {[0, 1, 2, 3].map((copy) => (
+          <div
+            className="walk-poster-group"
+            key={copy}
+            aria-hidden={copy > 0 ? true : undefined}
+          >
+            {interests.map((interest, index) => (
+              <Portrait
+                key={interest.kind}
+                index={index}
+                progress={progress}
+                reduced
+                mobile
+              />
+            ))}
+          </div>
+        ))}
       </div>
-      <button
-        type="button"
-        className="walk-marquee-toggle"
-        aria-label={paused ? "Resume moving cards" : "Pause moving cards"}
-        aria-pressed={paused}
-        onClick={() => setPaused((value) => !value)}
-      >
-        <span>{paused ? "TAP TO RESUME" : "TAP TO PAUSE"}</span>
-      </button>
     </div>
   );
 }
@@ -259,9 +227,8 @@ export default function SkillFactory({ onClose }: { onClose: () => void }) {
   const [complete, setComplete] = useState(false);
   // Resolve the viewport before choosing a source so phones never fetch both.
   const [mobile, setMobile] = useState<boolean | null>(null);
-  // Mobile uses an autonomous marquee instead of the pinned video journey.
-  const mobileMarquee = mobile === true && reduced === false;
-  const staticMode = mobile !== false || !!reduced || failed || unavailable;
+  // Normal motion retains the scroll-driven journey on mobile and desktop.
+  const staticMode = reduced || failed || unavailable;
   const { scrollYProgress } = useScroll({
     target: track,
     offset: ["start start", "end end"],
@@ -354,7 +321,7 @@ export default function SkillFactory({ onClose }: { onClose: () => void }) {
   return (
     <div
       ref={track}
-      className={`factory-dialog${staticMode ? " walk-static" : ""}${mobileMarquee ? " walk-mobile-marquee" : ""}${closing ? " walk-closing" : ""}`}
+      className={`factory-dialog${staticMode ? " walk-static" : ""}${reduced ? " walk-poster-scene" : ""}${closing ? " walk-closing" : ""}`}
       role="region"
       aria-label="A walk through my interests"
       onKeyDown={(event) => {
@@ -469,8 +436,8 @@ export default function SkillFactory({ onClose }: { onClose: () => void }) {
               </h2>
             </div>
           </header>
-          {mobileMarquee ? (
-            <MobileCardMarquee progress={sceneProgress} />
+          {reduced ? (
+            <PosterBackdrop progress={sceneProgress} />
           ) : (
             <div className="walk-gallery">
               {interests.map((interest, index) => (

@@ -569,100 +569,81 @@
   }
 }
 
-/* Mobile: an endless diagonal card wall behind the foreground cutout. */
-.walk-mobile-marquee .walk-stage {
-  padding: 180px 0 110px;
+/* Reduced motion: still posters fill the entire scene behind a full-size avatar. */
+.walk-poster-scene .walk-stage {
+  height: max(760px, 100svh);
+  padding: 0;
 }
-.walk-mobile-marquee .walk-video {
-  position: absolute;
-  top: 260px;
-  height: 340px;
-  z-index: 3;
-  filter: drop-shadow(0 10px 10px #132f4326);
-}
-.walk-marquee {
-  position: relative;
-  height: 560px;
-  isolation: isolate;
-}
-.walk-marquee-window {
+.walk-poster-backdrop {
   position: absolute;
   inset: 0;
   overflow: hidden;
-  perspective: 1000px;
-  mask-image: linear-gradient(transparent, black 12%, black 85%, transparent);
+  z-index: 0;
 }
-.walk-marquee-plane {
+.walk-poster-plane {
   position: absolute;
-  top: -100px;
+  top: 50%;
   left: 50%;
-  display: flex;
-  gap: 18px;
-  width: 360px;
-  transform: translateX(-50%) rotateX(12deg) rotateY(-14deg) rotateZ(-12deg);
-  transform-origin: center 360px;
-}
-.walk-marquee-track {
-  flex: 1;
-  min-width: 0;
-  animation: walk-cards-down 48s linear infinite;
-  will-change: transform;
-}
-.walk-marquee-track:nth-child(2) {
-  animation-delay: -24s;
-}
-.walk-marquee-group {
+  width: max(160%, 900px);
   display: grid;
-  gap: 18px;
-  padding-bottom: 18px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 20px;
+  transform: translate(-50%, -50%) rotate(-16deg);
 }
-.walk-static .walk-marquee .walk-portrait {
-  height: 290px;
+.walk-poster-group {
+  display: grid;
+  gap: 20px;
+}
+.walk-poster-group:nth-child(even) {
+  transform: translateY(150px);
+}
+.walk-static .walk-poster-backdrop .walk-portrait {
+  height: 310px;
   width: 100%;
-  padding: 10px;
+  padding: 12px;
   border-width: 2px;
   box-shadow: 4px 4px 0 #132f43;
 }
-.walk-marquee[data-paused="true"] .walk-marquee-track {
-  animation-play-state: paused;
-}
-.walk-marquee-toggle {
+.walk-poster-scene .walk-video {
   position: absolute;
-  z-index: 4;
   inset: 0;
   width: 100%;
-  border: 0;
-  color: #143b54;
-  background: transparent;
-  touch-action: pan-y;
-  cursor: pointer;
+  height: 100%;
+  object-fit: cover;
+  z-index: 1;
 }
-.walk-marquee-toggle span {
+.walk-poster-scene .walk-header {
+  z-index: 2;
+  width: fit-content;
+  padding: 14px;
+  background: var(--paper);
+}
+.walk-poster-scene .walk-instruction {
   position: absolute;
-  bottom: 0;
+  top: auto;
+  bottom: 70px;
   left: 50%;
   transform: translateX(-50%);
-  padding: 8px 12px;
+  width: max-content;
+  max-width: 90%;
+  margin: 0;
+  padding: 8px 14px;
   background: var(--paper);
-  font:
-    10px var(--font-body),
-    sans-serif;
-  letter-spacing: 0.12em;
+  z-index: 2;
 }
-.walk-marquee-toggle:focus-visible {
-  outline: 2px solid currentColor;
-  outline-offset: -4px;
+.walk-poster-scene .walk-footer {
+  z-index: 2;
 }
-@keyframes walk-cards-down {
-  from {
-    transform: translateY(-50%);
+.walk-poster-scene .walk-skip {
+  background: var(--paper);
+  padding: 10px 14px;
+}
+@media (max-width: 700px) {
+  .walk-poster-scene .walk-header {
+    top: 24px;
+    padding: 10px;
   }
-  to {
-    transform: translateY(0);
-  }
-}
-@media (prefers-reduced-motion: reduce) {
-  .walk-marquee-track {
-    animation: none;
+  .walk-poster-scene .walk-header h2 {
+    font-size: 26px;
   }
 }
