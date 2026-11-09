@@ -10,6 +10,7 @@ import { Discoveries } from "@/components/discoveries";
 import { TerminalHatch } from "@/components/terminal-hatch";
 import { Header } from "@/components/header";
 import { ProjectsCarousel } from "@/components/projects-carousel";
+import { WritingCarousel } from "@/components/writing-carousel";
 import { profile } from "@/content/profile";
 import { getWriting } from "@/lib/content";
 import { getRankedProjects, paginateProjects } from "@/lib/projects";
@@ -40,10 +41,6 @@ export default async function Home() {
       <Header />
       <main id="main">
         <section className="intro-hero wrap" aria-labelledby="hero-title">
-          <div className="intro-edition eyebrow">
-            <span>AI / ML & INFRASTRUCTURE</span>
-            <span>THE PERSONAL PORTFOLIO — VOL. 05</span>
-          </div>
           <div className="intro-grid">
             <figure className="portrait-panel">
               <div className="portrait-stage">
@@ -60,12 +57,6 @@ export default async function Home() {
                   preload
                 />
               </div>
-              <figcaption>
-                <span>FIG. 01 — THE HUMAN BEHIND THE CODE</span>
-                <a href="#about" aria-label="Meet the human behind the code">
-                  <Icon name="arrow-up-right" />
-                </a>
-              </figcaption>
             </figure>
             <div className="intro-copy">
               <p className="intro-greeting">Hey, I’m</p>
@@ -99,46 +90,47 @@ export default async function Home() {
           </div>
         </section>
         <InterestsMarquee />
-        <section id="about" className="about wrap section">
-          <div className="section-label">Introduction</div>
-          <div className="about-grid">
-            <div className="about-title">
-              <h2>
-                A LITTLE
-                <br />
-                CONTEXT<span className="accent glitch-dot">.</span>
-              </h2>
+        <section id="about" className="about section">
+          <div className="wrap">
+            <div className="about-grid">
+              <div className="about-title">
+                <h2>
+                  A LITTLE
+                  <br />
+                  CONTEXT<span className="accent glitch-dot">.</span>
+                </h2>
+              </div>
+              <div>
+                <p className="editorial">
+                  Part AI enthusiast.
+                  <br />
+                  Part infrastructure nerd.
+                  <br />
+                  <em>Always asking why.</em>
+                </p>
+                <p className="body-copy">
+                  My background in AI has led me deep into computer vision and
+                  explainable AI. I’m interested in what a model sees, how it
+                  arrives at a prediction, and how we can make that behaviour
+                  easier to understand.
+                </p>
+                <p className="body-copy">
+                  Alongside that is a longstanding passion for infrastructure
+                  engineering: the systems, services, and thoughtful details
+                  that help an idea work in the real world.
+                </p>
+                <a
+                  className="text-link"
+                  href={profile.resume}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  THE FULL STORY / RESUME <Icon name="arrow-up-right" />
+                </a>
+              </div>
             </div>
-            <div>
-              <p className="editorial">
-                Part AI enthusiast.
-                <br />
-                Part infrastructure nerd.
-                <br />
-                <em>Always asking why.</em>
-              </p>
-              <p className="body-copy">
-                My background in AI has led me deep into computer vision and
-                explainable AI. I’m interested in what a model sees, how it
-                arrives at a prediction, and how we can make that behaviour
-                easier to understand.
-              </p>
-              <p className="body-copy">
-                Alongside that is a longstanding passion for infrastructure
-                engineering: the systems, services, and thoughtful details that
-                help an idea work in the real world.
-              </p>
-              <a
-                className="text-link"
-                href={profile.resume}
-                target="_blank"
-                rel="noreferrer"
-              >
-                THE FULL STORY / RESUME <Icon name="arrow-up-right" />
-              </a>
-            </div>
+            <CareerOverview />
           </div>
-          <CareerOverview />
           <PagePeel />
         </section>
         <section id="portfolio" className="portfolio section">
@@ -147,13 +139,6 @@ export default async function Home() {
               <h2>
                 My Projects<span className="glitch-dot">.</span>
               </h2>
-              <p>
-                Experiments that became projects.
-                <br />
-                Questions that became code.
-                <br />
-                Explore my projects on GitHub.
-              </p>
             </div>
             <ProjectsCarousel initialData={initialProjects} />
             <a
@@ -166,33 +151,40 @@ export default async function Home() {
             </a>
           </div>
         </section>
-        <section id="writing" className="writing wrap section">
-          <div className="section-label">Publications</div>
+        <section
+          id="writing"
+          className="writing wrap section"
+          aria-labelledby="writing-title"
+        >
           <div className="writing-grid">
-            <h2>
+            <h2 id="writing-title">
               THINKING
               <br />
               OUT LOUD<span className="comic-exclamation">!</span>
             </h2>
             <div>
               {writing.articles.length ? (
-                writing.articles.map((article) => (
-                  <article className="article" key={article.url}>
-                    <span className="eyebrow">{article.date} / MEDIUM</span>
-                    <h3>
-                      <a href={article.url} target="_blank" rel="noreferrer">
-                        {article.title} <Icon name="arrow-up-right" />
-                      </a>
-                    </h3>
-                  </article>
-                ))
+                <div className="writing-intro">
+                  <p className="editorial">
+                    Questions, experiments,
+                    <br />
+                    and the occasional
+                    <br />
+                    <em>“oh, that’s interesting”.</em>
+                  </p>
+                  {writing.url && (
+                    <a
+                      className="text-link"
+                      href={writing.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      ALL STORIES ON MEDIUM <Icon name="arrow-up-right" />
+                    </a>
+                  )}
+                </div>
               ) : (
                 <div className="coming-soon">
-                  <span className="eyebrow">
-                    {writing.url
-                      ? "CONTINUE ON MEDIUM"
-                      : "A NEW CHAPTER IS BREWING"}
-                  </span>
                   <p className="editorial">
                     A place for the questions,
                     <br />
@@ -219,6 +211,9 @@ export default async function Home() {
               )}
             </div>
           </div>
+          {writing.articles.length > 0 && (
+            <WritingCarousel articles={writing.articles} />
+          )}
         </section>
         <section id="contact" className="contact section">
           <div className="wrap">
@@ -266,7 +261,6 @@ export default async function Home() {
                   Resume <Icon name="arrow-up-right" />
                 </a>
               </nav>
-              <span className="eyebrow">MADE OF CURIOSITY & CODE.</span>
             </footer>
             <Discoveries />
             <div

@@ -32,7 +32,6 @@ export function CareerOverview() {
         <h3>
           A few chapters<span className="glitch-dot">.</span>
         </h3>
-        <p>Building systems. Working with people.</p>
       </div>
       <div className="career-list">
         {chapters.map(({ company, focus, period }) => {
@@ -77,7 +76,6 @@ export function CareerOverview() {
         })}
       </div>
       <div className="career-footer">
-        <span>Open a chapter for the roles behind it.</span>
         <a href={profile.linkedin} target="_blank" rel="noreferrer">
           Full history on LinkedIn <Icon name="arrow-up-right" />
         </a>

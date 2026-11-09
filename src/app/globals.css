@@ -409,14 +409,12 @@ h2 {
   line-height: 1.6;
   max-width: 340px;
 }
-.article {
+.writing-intro {
   border-top: 1px solid;
-  padding: 22px 0;
+  padding-top: 22px;
 }
-.article h3 {
-  font-size: 30px;
-  line-height: 1.1;
-  margin-top: 15px;
+.writing-intro .editorial {
+  margin: 0 0 28px;
 }
 .contact {
   background: var(--accent);

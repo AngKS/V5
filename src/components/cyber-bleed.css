@@ -337,6 +337,93 @@ html.cyber-breach {
   }
 }
 
+/* Replace the comic burst with a damaged, illuminated terminal glyph. */
+.cyber-breach .comic-exclamation {
+  color: #91f5ff;
+  font-size: 1em;
+  font-style: normal;
+  transform: none;
+  -webkit-text-stroke: 0;
+  text-shadow:
+    -2px 0 #43f5ed88,
+    2px 0 #ff63db88,
+    0 0 12px #43f5ed66;
+  animation: cyber-punctuation-flicker 4.8s steps(1, end) infinite;
+}
+.cyber-breach .comic-exclamation::before {
+  content: "!" / "";
+  z-index: 1;
+  inset: 0;
+  background: none;
+  color: #ff63db;
+  text-shadow: none;
+  clip-path: polygon(
+    0 24%,
+    100% 24%,
+    100% 34%,
+    0 34%,
+    0 65%,
+    100% 65%,
+    100% 72%,
+    0 72%
+  );
+  opacity: 0;
+  animation: cyber-punctuation-channel 4.8s steps(1, end) infinite;
+}
+.cyber-breach .comic-exclamation::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: 0.08em -0.08em 0.02em;
+  border-block: 1px solid #43f5ed88;
+  background:
+    linear-gradient(#43f5ed, #43f5ed) left top / 1px 15% no-repeat,
+    linear-gradient(#ff63db, #ff63db) right bottom / 1px 15% no-repeat,
+    repeating-linear-gradient(0deg, transparent 0 5px, #43f5ed18 5px 6px);
+}
+@keyframes cyber-punctuation-flicker {
+  0%,
+  84%,
+  90%,
+  100% {
+    opacity: 1;
+    transform: none;
+  }
+  85%,
+  89% {
+    opacity: 0.72;
+    transform: translateX(1px);
+  }
+  87% {
+    opacity: 0.92;
+    transform: translateX(-1px);
+  }
+}
+@keyframes cyber-punctuation-channel {
+  0%,
+  84%,
+  90%,
+  100% {
+    opacity: 0;
+    transform: none;
+  }
+  85%,
+  89% {
+    opacity: 0.85;
+    transform: translateX(0.07em);
+  }
+  87% {
+    opacity: 0.65;
+    transform: translateX(-0.05em);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .cyber-breach .comic-exclamation,
+  .cyber-breach .comic-exclamation::before {
+    animation: none;
+  }
+}
+
 /* Classic terminal typography, only after the hatch has been discovered. */
 html.cyber-breach {
   --terminal-font: "Courier New", Courier, "Liberation Mono", monospace;
@@ -818,7 +905,21 @@ html.cyber-breach {
 }
 
 @keyframes portrait-frame-split-magenta {
-  0%, 75%, 84%, 100% { transform: translate(2px, 1px); opacity: .55; }
-  77%, 81% { transform: translate(-3px, -1px); opacity: .9; }
-  79%, 83% { transform: translate(3px, -2px); opacity: .7; }
+  0%,
+  75%,
+  84%,
+  100% {
+    transform: translate(2px, 1px);
+    opacity: 0.55;
+  }
+  77%,
+  81% {
+    transform: translate(-3px, -1px);
+    opacity: 0.9;
+  }
+  79%,
+  83% {
+    transform: translate(3px, -2px);
+    opacity: 0.7;
+  }
 }

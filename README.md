@@ -16,7 +16,7 @@ The screenshot captures the local application; explore the live site for the ful
 
 - Responsive introduction, LinkedIn experience link, project carousel, writing section, and contact links.
 - GitHub projects ranked by stars, then latest default-branch commit; lazy loading, pagination, touch swipes, and horizontal trackpad navigation.
-- Medium RSS integration, with a coming-soon state until a profile is configured.
+- Medium RSS carousel with cover images, excerpts, touch scrolling, and links to the original stories. A coming-soon state remains until a profile is configured.
 - Animated panda introduction and illustrated interests.
 - Comic loading animation, custom “Object not detected” 404, and an engine-room link to this repository.
 - Reduced-motion support, keyboard controls, and SVG icons.
@@ -73,6 +73,8 @@ All credentials stay server-side. Never prefix secret keys with `NEXT_PUBLIC_` o
 | `PORTFOLIO_BLOB_URL`    | Public Blob store origin                                                      |
 
 See [`.env.example`](.env.example) for the configured defaults. GitHub metadata and Medium feeds are cached for one hour. Unavailable commit dates fall back to repository push dates and are labeled in the interface.
+
+To enable the writing carousel, set `MEDIUM_PROFILE_URL` to `https://medium.com/@yourname` or `https://yourname.medium.com` in `.env.local` (and in the hosting environment when deploying). It displays up to ten recent stories supplied by the feed. Missing or failed cover images use a comic-style fallback, and an unavailable feed falls back to a profile link. No Medium API key is required.
 
 Performance behavior, measured transfer sizes, and the `npm run media:optimize`
 workflow are documented in [docs/performance.md](docs/performance.md).

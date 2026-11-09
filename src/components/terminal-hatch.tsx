@@ -122,6 +122,8 @@ export function TerminalHatch() {
     let last = 0;
     let touch: { x: number; y: number } | null = null;
     let resetTimer: ReturnType<typeof setTimeout>;
+    let settleTimer: ReturnType<typeof setTimeout>;
+    let settled = false;
     const atBottom = () =>
       window.scrollY + window.innerHeight >=
       document.documentElement.scrollHeight - 4;
@@ -129,16 +131,31 @@ export function TerminalHatch() {
       distance = 0;
       setPull(0);
     };
+    // Let the footer snap into place and the arriving gesture finish before
+    // accepting a fresh overscroll gesture for the terminal.
+    const settle = () => {
+      clearTimeout(settleTimer);
+      settleTimer = setTimeout(() => {
+        settled = atBottom() && touch === null;
+      }, 240);
+    };
     const accumulate = (delta: number, event: Event) => {
       if (Date.now() < cooldown.current || !atBottom()) {
+        settled = false;
         reset();
         return;
       }
       if (delta <= 0) {
+        settled = false;
         reset();
+        settle();
         return;
       }
       if (event.cancelable) event.preventDefault();
+      if (!settled) {
+        settle();
+        return;
+      }
       if (Date.now() - last > 1800) distance = 0;
       last = Date.now();
       // Cap individual wheel impulses so a single large scroll cannot open it.
@@ -181,10 +198,14 @@ export function TerminalHatch() {
     };
     const end = () => {
       touch = null;
+      if (!settled) settle();
     };
     const scroll = () => {
-      if (!atBottom()) reset();
+      settled = false;
+      reset();
+      settle();
     };
+    settle();
     window.addEventListener("wheel", wheel, { passive: false });
     window.addEventListener("touchstart", start, { passive: true });
     window.addEventListener("touchmove", move, { passive: false });
@@ -193,6 +214,7 @@ export function TerminalHatch() {
     window.addEventListener("scroll", scroll, { passive: true });
     return () => {
       clearTimeout(resetTimer);
+      clearTimeout(settleTimer);
       window.removeEventListener("wheel", wheel);
       window.removeEventListener("touchstart", start);
       window.removeEventListener("touchmove", move);

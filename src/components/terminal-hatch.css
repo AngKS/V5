@@ -1,4 +1,10 @@
+html:has(.terminal-hatch) {
+  scroll-snap-type: y proximity;
+}
+
 .terminal-hatch {
+  scroll-snap-align: end;
+  scroll-snap-stop: always;
   display: block;
   width: 100%;
   padding: 14px 24px;
